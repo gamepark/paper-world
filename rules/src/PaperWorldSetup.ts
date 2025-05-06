@@ -1,5 +1,5 @@
 import { MaterialGameSetup } from '@gamepark/rules-api'
-import { getLandscapes, LandscapeColor } from './material/Landscape'
+import { getLandscapeColor, getLandscapes, getLandscapeValue, Landscape, LandscapeColor } from './material/Landscape'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PaperWorldOptions } from './PaperWorldOptions'
@@ -19,8 +19,20 @@ export class PaperWorldSetup extends MaterialGameSetup<LandscapeColor, MaterialT
 
   setupLandscapes() {
     const landscapes = getLandscapes(this.players.length)
-    this.material(MaterialType.LandscapeCard).createItems(landscapes.map((landscape) => ({ id: landscape, location: { type: LocationType.Pile } })))
-    this.material(MaterialType.LandscapeCard).shuffle()
+    this.material(MaterialType.LandscapeCard).createItems(
+      landscapes.map((landscape) => ({
+        id: landscape,
+        location: { type: LocationType.Pile, x: Math.floor(Math.random() * 5) }
+      }))
+    )
+    for (const player of this.players) {
+      this.material(MaterialType.LandscapeCard)
+        .id<Landscape>((landscape) => getLandscapeValue(landscape) === 1 && getLandscapeColor(landscape) === player)
+        .moveItem({ type: LocationType.Landscape, player })
+    }
+    this.material(MaterialType.LandscapeCard).location(LocationType.Pile).shuffle()
+  }
+
   }
 
   start() {
