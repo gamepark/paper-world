@@ -1,10 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
+import { LandscapeColor } from '@gamepark/paper-world/material/Landscape'
 import { StyledPlayerPanel, usePlayers } from '@gamepark/react-game'
 import { createPortal } from 'react-dom'
 
 export const PlayerPanels = () => {
-  const players = usePlayers<number>({ sortFromMe: true })
+  const players = usePlayers<LandscapeColor>({ sortFromMe: true })
   const root = document.getElementById('root')
   if (!root) {
     return null
