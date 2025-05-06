@@ -1,24 +1,44 @@
 export enum Landscape {
-  Blue1 = 11,
-  Blue2 = 12,
-  Blue3 = 13,
-  Blue4 = 14,
-  Blue5 = 15,
-  Green1 = 21,
-  Green2 = 22,
-  Green3 = 23,
-  Green4 = 24,
-  Green5 = 25,
-  Yellow1 = 31,
-  Yellow2 = 32,
-  Yellow3 = 33,
-  Yellow4 = 34,
-  Yellow5 = 35,
-  Black1 = 41,
-  Black2 = 42,
-  Black3 = 43,
-  Black4 = 44,
-  Black5 = 45
+  Yellow1 = 10,
+  Yellow2,
+  Yellow3,
+  Yellow4,
+  Yellow5,
+  Yellow1Scissors,
+  Yellow2Scissors,
+  Yellow3Scissors,
+  Yellow4Scissors,
+  Yellow5Scissors,
+  Blue1,
+  Blue2,
+  Blue3,
+  Blue4,
+  Blue5,
+  Blue1Scissors,
+  Blue2Scissors,
+  Blue3Scissors,
+  Blue4Scissors,
+  Blue5Scissors,
+  Green1,
+  Green2,
+  Green3,
+  Green4,
+  Green5,
+  Green1Scissors,
+  Green2Scissors,
+  Green3Scissors,
+  Green4Scissors,
+  Green5Scissors,
+  Black1,
+  Black2,
+  Black3,
+  Black4,
+  Black5,
+  Black1Scissors,
+  Black2Scissors,
+  Black3Scissors,
+  Black4Scissors,
+  Black5Scissors
 }
 
 export enum LandscapeColor {
@@ -27,3 +47,7 @@ export enum LandscapeColor {
   Green,
   Black
 }
+
+export const getLandscapeColor = (landscape: Landscape): LandscapeColor => Math.floor(landscape / 10)
+export const getLandscapeValue = (landscape: Landscape) => (landscape + 1) % 5
+export const hasScissors = (landscape: Landscape) => landscape % 10 >= 5
