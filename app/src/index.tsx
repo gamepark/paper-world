@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
-import { GameTemplateOptionsSpec } from '@gamepark/game-template/GameTemplateOptions'
-import { GameTemplateRules } from '@gamepark/game-template/GameTemplateRules'
-import { GameTemplateSetup } from '@gamepark/game-template/GameTemplateSetup'
+import { PaperWorldOptionsSpec } from '@gamepark/paper-world/PaperWorldOptions'
+import { PaperWorldRules } from '@gamepark/paper-world/PaperWorldRules'
+import { PaperWorldSetup } from '@gamepark/paper-world/PaperWorldSetup'
 import { GameProvider, setupTranslation } from '@gamepark/react-game'
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
@@ -16,10 +16,10 @@ setupTranslation(translations, { debug: false })
 ReactDOM.render(
   <StrictMode>
     <GameProvider
-      game="game-template"
-      Rules={GameTemplateRules}
-      optionsSpec={GameTemplateOptionsSpec}
-      GameSetup={GameTemplateSetup}
+      game="paper-world"
+      Rules={PaperWorldRules}
+      optionsSpec={PaperWorldOptionsSpec}
+      GameSetup={PaperWorldSetup}
       material={Material}
       locators={Locators}
       animations={gameAnimations}
