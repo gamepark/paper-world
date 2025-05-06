@@ -22,8 +22,8 @@ export enum Landscape {
 }
 
 export enum LandscapeColor {
-  Blue = 1,
+  Yellow = 1,
+  Blue,
   Green,
-  Yellow,
   Black
 }
