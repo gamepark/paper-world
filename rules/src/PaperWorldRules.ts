@@ -1,4 +1,4 @@
-import { MaterialGame, MaterialMove, MaterialRules, TimeLimit } from '@gamepark/rules-api'
+import { MaterialGame, MaterialMove, MaterialRules, StackingStrategy, TimeLimit } from '@gamepark/rules-api'
 import { LandscapeColor } from './material/Landscape'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
@@ -15,6 +15,12 @@ export class PaperWorldRules
 {
   rules = {
     [RuleId.TheFirstStep]: TheFirstStepRule
+  }
+
+  locationsStrategies = {
+    [MaterialType.LandscapeCard]: {
+      [LocationType.Pile]: new StackingStrategy()
+    }
   }
 
   giveTime(): number {
