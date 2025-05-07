@@ -1,9 +1,9 @@
-import { MaterialGame, MaterialMove, MaterialRules, StackingStrategy, TimeLimit } from '@gamepark/rules-api'
+import { MaterialGame, MaterialMove, MaterialRules, PositiveSequenceStrategy, TimeLimit } from '@gamepark/rules-api'
 import { LandscapeColor } from './material/Landscape'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
-import { TheFirstStepRule } from './rules/TheFirstStepRule'
 import { RuleId } from './rules/RuleId'
+import { TheFirstStepRule } from './rules/TheFirstStepRule'
 
 /**
  * This class implements the rules of the board game.
@@ -19,7 +19,7 @@ export class PaperWorldRules
 
   locationsStrategies = {
     [MaterialType.LandscapeCard]: {
-      [LocationType.Pile]: new StackingStrategy()
+      [LocationType.Pile]: new PositiveSequenceStrategy()
     }
   }
 
