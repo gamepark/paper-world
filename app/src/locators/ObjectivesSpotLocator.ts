@@ -3,7 +3,7 @@ import { Coordinates, Location } from '@gamepark/rules-api'
 import { objectiveCardDescription } from '../material/ObjectiveCardDescription'
 
 class ObjectivesSpotLocator extends Locator {
-  coordinates = { x: -7.5, y: -15 }
+  coordinates = { x: -7.5, y: -14 }
 
   getCoordinates(location: Location, _context: MaterialContext): Partial<Coordinates> {
     const { x, y } = super.getCoordinates(location, _context)

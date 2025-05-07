@@ -2,7 +2,7 @@ import { MaterialContext, PileLocator } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
 
 class ScoreTokenSpotLocator extends PileLocator {
-  coordinates = { x: -7.5, y: -9 }
+  coordinates = { x: -7.5, y: -8 }
   radius = 1
   getCoordinates(location: Location, context: MaterialContext) {
     const { x, y } = super.getCoordinates(location, context)
