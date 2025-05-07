@@ -1,3 +1,5 @@
+import { getEnumValues } from '@gamepark/rules-api'
+
 export enum Objectives {
   LOfSameColor = 1,
   FourCornersWithTheSameValue,
@@ -19,4 +21,10 @@ export enum Objectives {
   SquareOfSameColor,
   CrossOfDifferentValues,
   CrossOfDifferentColors
+}
+
+const objectives = getEnumValues(Objectives)
+
+export function getRandomObjectives(): Objectives[] {
+  return objectives.sort(() => Math.random() - 0.5).slice(0, 3)
 }

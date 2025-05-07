@@ -2,6 +2,7 @@ import { MaterialGameSetup } from '@gamepark/rules-api'
 import { getLandscapeColor, getLandscapes, getLandscapeValue, Landscape, LandscapeColor } from './material/Landscape'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
+import { getRandomObjectives } from './material/Objectives'
 import { scoreToken } from './material/ScoreToken'
 import { PaperWorldOptions } from './PaperWorldOptions'
 import { PaperWorldRules } from './PaperWorldRules'
@@ -37,6 +38,10 @@ export class PaperWorldSetup extends MaterialGameSetup<LandscapeColor, MaterialT
   }
 
   setupObjectives() {
+    const objectives = getRandomObjectives()
+    this.material(MaterialType.ObjectiveCard).createItems(
+      objectives.map((objective, index) => ({ id: objective, location: { type: LocationType.ObjectivesSpot, id: index } }))
+    )
     for (let i = 0; i < 3; i++) {
       this.material(MaterialType.ScoreToken).createItems(scoreToken.map((token) => ({ id: token, location: { type: LocationType.ScoreTokensSpot, id: i } })))
     }
