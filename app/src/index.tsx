@@ -8,7 +8,7 @@ import ReactDOM from 'react-dom'
 import { gameAnimations } from './animations/GameAnimations'
 import App from './App'
 import { Locators } from './locators/Locators'
-import { Material } from './material/Material'
+import { Material, materialI18n } from './material/Material'
 import translations from './translations.json'
 
 setupTranslation(translations, { debug: false })
@@ -21,6 +21,7 @@ ReactDOM.render(
       optionsSpec={PaperWorldOptionsSpec}
       GameSetup={PaperWorldSetup}
       material={Material}
+      materialI18n={materialI18n}
       locators={Locators}
       animations={gameAnimations}
     >

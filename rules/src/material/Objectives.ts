@@ -1,0 +1,22 @@
+export enum Objectives {
+  LOfSameColor = 1,
+  FourCornersWithTheSameValue,
+  LOf2s,
+  SquareOfDifferentColors,
+  NineStacks,
+  OneDiagonalOfSameColor,
+  OneLineOf3s,
+  TwoStacksOf5s,
+  OneTwoThreeFourFiveVisible,
+  OneColumnWith252,
+  OneDiagonalWith234,
+  ThreeStacksOf4s,
+  FiveStacksOf1s,
+  OneLineWithValueOf9,
+  OneColumnWithValueOf12,
+  ThreeStacksWithScissors,
+  SquareOf3,
+  SquareOfSameColor,
+  CrossOfDifferentValues,
+  CrossOfDifferentColors
+}
