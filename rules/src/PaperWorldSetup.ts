@@ -32,7 +32,7 @@ export class PaperWorldSetup extends MaterialGameSetup<LandscapeColor, MaterialT
     for (const player of this.players) {
       this.material(MaterialType.LandscapeCard)
         .id<Landscape>((landscape) => getLandscapeValue(landscape) === 1 && getLandscapeColor(landscape) === player)
-        .moveItem({ type: LocationType.Landscape, player })
+        .moveItem({ type: LocationType.Landscape, player, x: 0, y: 0 })
     }
     this.material(MaterialType.LandscapeCard).location(LocationType.Pile).shuffle()
   }
