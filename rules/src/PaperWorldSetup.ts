@@ -23,11 +23,17 @@ export class PaperWorldSetup extends MaterialGameSetup<LandscapeColor, MaterialT
 
   setupLandscapes() {
     const landscapes = getLandscapes(this.players.length)
+    let index = 0
+
     this.material(MaterialType.LandscapeCard).createItems(
-      landscapes.map((landscape) => ({
-        id: landscape,
-        location: { type: LocationType.Pile, id: Math.floor(Math.random() * 5) }
-      }))
+      landscapes.map((landscape) => {
+        const pileId = index % 5
+        index++
+        return {
+          id: landscape,
+          location: { type: LocationType.Pile, id: pileId }
+        }
+      })
     )
     for (const player of this.players) {
       this.material(MaterialType.LandscapeCard)

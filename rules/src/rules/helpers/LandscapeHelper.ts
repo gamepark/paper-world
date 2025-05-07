@@ -11,7 +11,6 @@ export class LandscapeHelper extends MaterialRulesPart {
   }
 
   get panorama() {
-    console.log(this.material(MaterialType.LandscapeCard).location(LocationType.Landscape).player(this.player))
     return this.material(MaterialType.LandscapeCard).location(LocationType.Landscape).player(this.player)
   }
 
