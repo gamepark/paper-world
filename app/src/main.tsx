@@ -1,19 +1,15 @@
-/** @jsxImportSource @emotion/react */
 import { PaperWorldOptionsSpec } from '@gamepark/paper-world/PaperWorldOptions'
 import { PaperWorldRules } from '@gamepark/paper-world/PaperWorldRules'
 import { PaperWorldSetup } from '@gamepark/paper-world/PaperWorldSetup'
-import { GameProvider, setupTranslation } from '@gamepark/react-game'
+import { GameProvider } from '@gamepark/react-game'
 import { StrictMode } from 'react'
-import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { gameAnimations } from './animations/GameAnimations'
-import App from './App'
+import { App } from './App'
 import { Locators } from './locators/Locators'
 import { Material, materialI18n } from './material/Material'
-import translations from './translations.json'
 
-setupTranslation(translations, { debug: false })
-
-ReactDOM.render(
+createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <GameProvider
       game="paper-world"
@@ -27,6 +23,5 @@ ReactDOM.render(
     >
       <App />
     </GameProvider>
-  </StrictMode>,
-  document.getElementById('root')
+  </StrictMode>
 )

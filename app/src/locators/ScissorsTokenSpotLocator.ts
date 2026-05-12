@@ -13,6 +13,10 @@ class ScissorsTokenSpotLocator extends Locator {
       return { x, y }
     }
   }
+
+  getPositionDependencies(_location: Location, context: MaterialContext) {
+    return { players: context.rules.players.length }
+  }
 }
 
 export const scissorsTokenSpotLocator = new ScissorsTokenSpotLocator()

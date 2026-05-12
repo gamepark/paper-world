@@ -13,6 +13,10 @@ class ScoreTokenSpotLocator extends PileLocator {
       return { x: x! + 25 + 7 * location.id! + 0.5 * location.id!, y }
     }
   }
+
+  getPositionDependencies(_location: Location, context: MaterialContext) {
+    return { players: context.rules.players.length }
+  }
 }
 
 export const scoreTokenSpotLocator = new ScoreTokenSpotLocator()

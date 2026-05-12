@@ -14,6 +14,10 @@ class ObjectivesSpotLocator extends Locator {
       return { x: x! + 25 + objectiveCardDescription.width * location.id + 0.5 * location.id, y }
     }
   }
+
+  getPositionDependencies(_location: Location, context: MaterialContext) {
+    return { players: context.rules.players.length }
+  }
 }
 
 export const objectivesSpotLocator = new ObjectivesSpotLocator()

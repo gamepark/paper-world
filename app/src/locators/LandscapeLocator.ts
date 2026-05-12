@@ -29,6 +29,13 @@ class LandscapeLocator extends Locator {
     }
   }
 
+  getPositionDependencies(location: Location, context: MaterialContext) {
+    return {
+      players: context.rules.players.length,
+      boundaries: new LandscapeHelper(context.rules.game, location.player!).boundaries
+    }
+  }
+
   getBaseCoordinates(location: Location, context: MaterialContext) {
     const playerIndex = getRelativePlayerIndex(context, location.player)
     const position = playerPositions[context.rules.players.length - 2][playerIndex]

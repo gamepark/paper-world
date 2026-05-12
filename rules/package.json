@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "description": "The rules of Paper World adapted for Game Park",
   "sideEffects": false,
+  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -14,19 +15,21 @@
     "access": "public"
   },
   "scripts": {
-    "build": "tsc",
-    "prepublishOnly": "tsc",
+    "test": "vitest",
+    "check:cycles": "madge --circular --extensions ts src",
+    "build": "yarn check:cycles && tsc",
+    "prepublishOnly": "yarn check:cycles && tsc",
     "publish": "lerna publish",
     "lint": "eslint --fix"
   },
   "peerDependencies": {
-    "@gamepark/rules-api": ">=6.33",
-    "lodash": ">=4.17"
+    "@gamepark/rules-api": ">=7",
+    "es-toolkit": "^1.45.1"
   },
   "devDependencies": {
-    "@gamepark/rules-api": "~6.33.0",
-    "@types/lodash": "^4.17.7",
-    "i18next": "^22.0.3",
-    "lodash": "^4.17.21"
+    "@gamepark/rules-api": "~7.6.3",
+    "es-toolkit": "^1.46.1",
+    "madge": "^8.0.0",
+    "vitest": "^4.1.6"
   }
 }

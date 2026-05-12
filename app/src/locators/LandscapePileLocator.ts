@@ -11,6 +11,10 @@ class LandscapePileLocator extends DeckLocator {
       return { x: -35 + landscapeCardDescription.width * location.id! + location.id! * 0.5, y: -25 }
     }
   }
+
+  getPositionDependencies(_location: Location, context: MaterialContext) {
+    return { players: context.rules.players.length }
+  }
 }
 
 export const landscapePileLocator = new LandscapePileLocator()

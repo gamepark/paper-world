@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { LandscapeColor } from '@gamepark/paper-world/material/Landscape'
 import { StyledPlayerPanel, usePlayers } from '@gamepark/react-game'
@@ -14,7 +13,7 @@ export const PlayerPanels = () => {
   return createPortal(
     <>
       {players.map((player, index) => (
-        <StyledPlayerPanel key={player.id} player={player} css={panelPosition(index)} />
+        <StyledPlayerPanel key={player.id} player={player} css={panelPosition(index)} activeRing />
       ))}
     </>,
     root
