@@ -1,9 +1,9 @@
-import { MaterialContext, PileLocator } from '@gamepark/react-game'
+import { MaterialContext, DeckLocator } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
 
-class ScoreTokenSpotLocator extends PileLocator {
+class ScoreTokenSpotLocator extends DeckLocator {
   coordinates = { x: -7.5, y: -19 }
-  radius = 1
+  gap = { x: -2}
   getCoordinates(location: Location, context: MaterialContext) {
     const numberOfPlayers = context.rules.players.length
     const { x, y } = super.getCoordinates(location, context)

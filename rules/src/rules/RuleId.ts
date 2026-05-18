@@ -1,3 +1,5 @@
 export enum RuleId {
-  TheFirstStep = 1
+  ChooseAction = 1,
+  PlaceCard,
+  DiscardToLimit
 }

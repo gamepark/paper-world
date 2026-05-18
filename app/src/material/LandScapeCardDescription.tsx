@@ -1,5 +1,11 @@
 import { Landscape } from '@gamepark/paper-world/material/Landscape'
-import { CardDescription } from '@gamepark/react-game'
+import { LocationType } from '@gamepark/paper-world/material/LocationType'
+import { MaterialType } from '@gamepark/paper-world/material/MaterialType'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowDown } from '@fortawesome/free-solid-svg-icons'
+import { CardDescription, ItemContext, ItemMenuButton } from '@gamepark/react-game'
+import { isMoveItemType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
+import { Trans } from 'react-i18next'
 
 import Yellow1 from '../images/paper-cards/Yellow1.jpg'
 import Yellow2 from '../images/paper-cards/Yellow2.jpg'
@@ -81,6 +87,21 @@ class LandScapeCardDescription extends CardDescription {
     [Landscape.BlackScissors2]: BlackScissors2,
     [Landscape.BlackScissors3]: BlackScissors3,
     [Landscape.BlackScissors4]: BlackScissors4
+  }
+
+  isMenuAlwaysVisible(item: MaterialItem): boolean {
+    return item.location.type === LocationType.Pile
+  }
+
+  getItemMenu(item: MaterialItem, context: ItemContext, legalMoves: MaterialMove[]) {
+    if (item.location.type !== LocationType.Pile) return undefined
+    const prendreMove = legalMoves.find(m =>
+      isMoveItemType(MaterialType.LandscapeCard)(m) &&
+      m.location.type === LocationType.PendingTake &&
+      m.itemIndex === context.index
+    )
+    if (!prendreMove) return undefined
+    return <ItemMenuButton move={prendreMove} x={-2} y={0} label={<Trans i18nKey={"button.take"} />} labelPosition="right"><FontAwesomeIcon icon={faArrowDown} /></ItemMenuButton>
   }
 }
 

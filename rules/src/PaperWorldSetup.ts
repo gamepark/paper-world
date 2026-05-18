@@ -3,7 +3,7 @@ import { getLandscapeColor, getLandscapes, getLandscapeValue, Landscape, Landsca
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { getRandomObjectives } from './material/Objectives'
-import { scoreToken } from './material/ScoreToken'
+import { ScoreToken, scoreToken } from './material/ScoreToken'
 import { PaperWorldOptions } from './PaperWorldOptions'
 import { PaperWorldRules } from './PaperWorldRules'
 import { RuleId } from './rules/RuleId'
@@ -18,6 +18,7 @@ export class PaperWorldSetup extends MaterialGameSetup<LandscapeColor, MaterialT
     this.setupLandscapes()
     this.setupObjectives()
     this.setupScissorsToken()
+    this.setupPlaceMarkers()
     // TODO
   }
 
@@ -48,8 +49,9 @@ export class PaperWorldSetup extends MaterialGameSetup<LandscapeColor, MaterialT
     this.material(MaterialType.ObjectiveCard).createItems(
       objectives.map((objective, index) => ({ id: objective, location: { type: LocationType.ObjectivesSpot, id: index } }))
     )
+    const tokens = this.players.length === 2 ? scoreToken.filter((token) => token !== ScoreToken.ScoreToken4) : scoreToken
     for (let i = 0; i < 3; i++) {
-      this.material(MaterialType.ScoreToken).createItems(scoreToken.map((token) => ({ id: token, location: { type: LocationType.ScoreTokensSpot, id: i } })))
+      this.material(MaterialType.ScoreToken).createItems(tokens.map((token) => ({ id: token, location: { type: LocationType.ScoreTokensSpot, id: i } })))
     }
   }
 
@@ -57,7 +59,15 @@ export class PaperWorldSetup extends MaterialGameSetup<LandscapeColor, MaterialT
     this.material(MaterialType.ScissorsToken).createItem({ location: { type: LocationType.ScissorsTokenSpot } })
   }
 
+  setupPlaceMarkers() {
+    for (const player of this.players) {
+      this.material(MaterialType.PlaceMarker).createItem({
+        location: { type: LocationType.PlaceState, player, x: 0 }
+      })
+    }
+  }
+
   start() {
-    this.startPlayerTurn(RuleId.TheFirstStep, this.players[0])
+    this.startPlayerTurn(RuleId.ChooseAction, this.players[0])
   }
 }

@@ -47,7 +47,7 @@ export enum LandscapeColor {
 }
 
 export const getLandscapeColor = (landscape: Landscape): LandscapeColor => Math.floor(landscape / 10)
-export const getLandscapeValue = (landscape: Landscape) => landscape % 5
+export const getLandscapeValue = (landscape: Landscape) => landscape % 5 || 5
 export const hasScissors = (landscape: Landscape) => landscape % 10 > 5
 
 const blueBackLandscapes: Record<Landscape, number> = {

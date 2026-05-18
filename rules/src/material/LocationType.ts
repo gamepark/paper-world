@@ -6,5 +6,7 @@ export enum LocationType {
   PlayerHand,
   Discard,
   ScissorsTokenSpot,
-  ScissorsTokenLandscapeSpot
+  ScissorsTokenLandscapeSpot,
+  PendingTake,
+  PlaceState
 }

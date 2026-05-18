@@ -25,7 +25,8 @@ class LandscapeLocator extends Locator {
     const deltaY = (yMin + yMax) / 2
     return {
       x: x + (location.x! - deltaX) * (landscapeCardDescription.width + 0.2),
-      y: y + (location.y! - deltaY) * (landscapeCardDescription.height + 0.2)
+      y: y + (location.y! - deltaY) * (landscapeCardDescription.height + 0.2),
+      z: (location.id ?? 0) * 0.05
     }
   }
 

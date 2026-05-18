@@ -1,1 +1,21 @@
-{}
+{
+  "button.take": "Prendre",
+  "take.choose": "Prenez une carte d'une pile ou posez une carte de votre main",
+  "take.opponent": "{player} choisit entre prendre ou poser des cartes",
+  "take.pending.prefix": "Prendre les cartes de",
+  "take.pending.or": "ou",
+  "take.by.color": "même couleur",
+  "take.by.value": "même valeur",
+  "take.color.1": "Prendre les jaunes",
+  "take.color.2": "Prendre les bleus",
+  "take.color.3": "Prendre les verts",
+  "take.color.4": "Prendre les noirs",
+  "place.choose": "Prenez une carte d'une pile ou posez une carte de votre main",
+  "place.first": "Posez vos cartes de même couleur ou de même valeur",
+  "place.color": "Posez vos cartes de même couleur",
+  "place.value": "Posez vos cartes de même valeur",
+  "place.end": "Terminer la pose",
+  "place.opponent": "{player} pose des cartes",
+  "discard.choose": "Défaussez {count} carte(s) de votre main",
+  "discard.opponent": "{player} défausse des cartes"
+}
