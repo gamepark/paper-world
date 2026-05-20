@@ -78,6 +78,18 @@ export function getValidSpots(cardId: Landscape, panorama: MaterialItem[], block
   return validSpots
 }
 
+export function wasSkipUsed(cardId: Landscape, x: number, y: number, stackIndex: number, panorama: MaterialItem[]): boolean {
+  const cardValue = getLandscapeValue(cardId)
+  if (stackIndex === 0) {
+    return cardValue === 2  // emplacement vide: valeur 2 = saut de la valeur 1
+  }
+  const prevTop = panorama.find(item =>
+    item.location.x === x && item.location.y === y && (item.location.id ?? 0) === stackIndex - 1
+  )
+  if (!prevTop) return false
+  return cardValue === getLandscapeValue(prevTop.id as Landscape) + 2
+}
+
 export function getPlayerPanorama(material: { location: { type: LocationType; player?: number; x?: number; y?: number; id?: number } }[], player: number): MaterialItem[] {
   return material.filter(item => item.location.type === LocationType.Landscape && item.location.player === player) as MaterialItem[]
 }

@@ -1,7 +1,9 @@
 export enum CustomMoveType {
   TakeByValue = 1,
   TakeByColor,
-  EndPlace
+  EndPlace,
+  TakeScissorsToken,
+  SkipScissorsToken
 }
 
 export type TakeByValueData = { value: number; pileId: number }

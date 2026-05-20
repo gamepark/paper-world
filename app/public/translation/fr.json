@@ -15,6 +15,13 @@
   "place.color": "Posez vos cartes de même couleur",
   "place.value": "Posez vos cartes de même valeur",
   "place.end": "Terminer la pose",
+  "place.skip": "Défaussez une carte pour sauter un rang",
+  "place.skip.pending": "Saut activé — posez votre carte",
+  "scissors.take": "Prendre",
+  "scissors.skip": "Laisser",
+  "scissors.decision": "Voulez-vous prendre le jeton ciseaux ?",
+  "scissors.decision.opponent": "{player} choisit de prendre ou non le jeton ciseaux",
+  "scissors.has": "Vous avez le jeton ciseaux — saut gratuit disponible",
   "place.opponent": "{player} pose des cartes",
   "discard.choose": "Défaussez {count} carte(s) de votre main",
   "discard.opponent": "{player} défausse des cartes"

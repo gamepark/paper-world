@@ -6,6 +6,7 @@ import { RuleId } from './rules/RuleId'
 import { ChooseActionRule } from './rules/ChooseActionRule'
 import { DiscardToLimitRule } from './rules/DiscardToLimitRule'
 import { PlaceCardRule } from './rules/PlaceCardRule'
+import { TakeScissorsRule } from './rules/TakeScissorsRule'
 
 /**
  * This class implements the rules of the board game.
@@ -18,7 +19,8 @@ export class PaperWorldRules
   rules = {
     [RuleId.ChooseAction]: ChooseActionRule,
     [RuleId.PlaceCard]: PlaceCardRule,
-    [RuleId.DiscardToLimit]: DiscardToLimitRule
+    [RuleId.DiscardToLimit]: DiscardToLimitRule,
+    [RuleId.TakeScissors]: TakeScissorsRule
   }
 
   locationsStrategies = {
