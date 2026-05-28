@@ -37,8 +37,6 @@ export class DiscardToLimitRule extends PlayerTurnRule {
   }
 
   private nextPlayerMoves(): MaterialMove[] {
-    const players = this.game.players
-    const nextPlayer = players[(players.indexOf(this.player) + 1) % players.length]
-    return [this.startPlayerTurn(RuleId.ChooseAction, nextPlayer)]
+    return [this.startPlayerTurn(RuleId.CheckObjectives, this.player)]
   }
 }

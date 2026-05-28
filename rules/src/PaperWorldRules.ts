@@ -3,6 +3,7 @@ import { LandscapeColor } from './material/Landscape'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { RuleId } from './rules/RuleId'
+import { CheckObjectivesRule } from './rules/CheckObjectivesRule'
 import { ChooseActionRule } from './rules/ChooseActionRule'
 import { DiscardToLimitRule } from './rules/DiscardToLimitRule'
 import { PlaceCardRule } from './rules/PlaceCardRule'
@@ -20,7 +21,8 @@ export class PaperWorldRules
     [RuleId.ChooseAction]: ChooseActionRule,
     [RuleId.PlaceCard]: PlaceCardRule,
     [RuleId.DiscardToLimit]: DiscardToLimitRule,
-    [RuleId.TakeScissors]: TakeScissorsRule
+    [RuleId.TakeScissors]: TakeScissorsRule,
+    [RuleId.CheckObjectives]: CheckObjectivesRule
   }
 
   locationsStrategies = {

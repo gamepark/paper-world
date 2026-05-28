@@ -24,5 +24,7 @@
   "scissors.has": "Vous avez le jeton ciseaux — saut gratuit disponible",
   "place.opponent": "{player} pose des cartes",
   "discard.choose": "Défaussez {count} carte(s) de votre main",
-  "discard.opponent": "{player} défausse des cartes"
+  "discard.opponent": "{player} défausse des cartes",
+  "objectives.check": "Vérification des objectifs...",
+  "objectives.check.opponent": "{player} vérifie ses objectifs..."
 }

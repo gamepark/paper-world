@@ -2,5 +2,6 @@ export enum RuleId {
   ChooseAction = 1,
   PlaceCard,
   DiscardToLimit,
-  TakeScissors
+  TakeScissors,
+  CheckObjectives
 }

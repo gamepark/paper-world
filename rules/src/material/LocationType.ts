@@ -8,5 +8,6 @@ export enum LocationType {
   ScissorsTokenSpot,
   PendingTake,
   PlaceState,
-  ScissorsTokenPlayerSpot
+  ScissorsTokenPlayerSpot,
+  PlayerScoreSpot
 }

@@ -9,6 +9,7 @@ import { objectivesSpotLocator } from './ObjectivesSpotLocator'
 import { pendingTakeLocator } from './PendingTakeLocator'
 import { playerHandLocator } from './PlayerHandLocator'
 import { scissorsTokenSpotLocator } from './ScissorsTokenSpotLocator'
+import { playerScoreSpotLocator } from './PlayerScoreSpotLocator'
 import { scissorsTokenPlayerSpotLocator } from './ScissorsTokenPlayerSpotLocator'
 import { scoreTokenSpotLocator } from './ScoreTokenSpotLocator'
 
@@ -21,5 +22,6 @@ export const Locators: Partial<Record<LocationType, Locator<LandscapeColor, Mate
   [LocationType.PlayerHand]: playerHandLocator,
   [LocationType.ScoreTokensSpot]: scoreTokenSpotLocator,
   [LocationType.ScissorsTokenSpot]: scissorsTokenSpotLocator,
-  [LocationType.ScissorsTokenPlayerSpot]: scissorsTokenPlayerSpotLocator
+  [LocationType.ScissorsTokenPlayerSpot]: scissorsTokenPlayerSpotLocator,
+  [LocationType.PlayerScoreSpot]: playerScoreSpotLocator
 }
