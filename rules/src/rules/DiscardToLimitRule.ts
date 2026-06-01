@@ -17,7 +17,7 @@ export class DiscardToLimitRule extends PlayerTurnRule {
     return this.material(MaterialType.LandscapeCard)
       .location(LocationType.PlayerHand)
       .player(this.player)
-      .moveItems({ type: LocationType.Discard })
+      .moveItems({ type: LocationType.Discard, player: this.player })
   }
 
   afterItemMove(move: ItemMove): MaterialMove[] {

@@ -193,7 +193,7 @@ export class PlaceCardRule extends PlayerTurnRule {
       moves.push(
         this.material(MaterialType.LandscapeCard)
           .id(cardId).location(LocationType.PlayerHand).player(this.player)
-          .moveItem({ type: LocationType.Discard })
+          .moveItem({ type: LocationType.Discard, player: this.player })
       )
     }
     return moves

@@ -1,0 +1,3 @@
+export enum Memory {
+  FinalRoundStartPlayer = 1
+}
