@@ -10,10 +10,11 @@ class PlayerHandLocator extends HandLocator {
     const locationIndex = players.indexOf(location.player as LandscapeColor)
     const seat = (locationIndex - viewerIndex + players.length) % players.length
 
+    const z = super.getCoordinates(location, context).z ?? 0
     switch (seat) {
-      case 0: return { x: -27, y: 25 }
-      case 1: return { x: 30, y: 25 }
-      default: return { x: 0, y: 25 }
+      case 0: return { x: -27, y: 25, z }
+      case 1: return { x: 30, y: 25, z }
+      default: return { x: 0, y: 25, z }
     }
   }
 
