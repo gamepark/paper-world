@@ -123,11 +123,7 @@ export class ChooseActionRule extends PlayerTurnRule {
     const newRotation = skipWasUsed ? 2 : (this.skipPending ? 1 : 0)
 
     const isScissors = hasScissors(card.id as Landscape)
-    const tokenAtStart = this.material(MaterialType.ScissorsToken)
-      .location(LocationType.ScissorsTokenSpot)
-      .getItem() !== undefined
-
-    const nextRule = isScissors && tokenAtStart ? RuleId.TakeScissors : RuleId.PlaceCard
+    const nextRule = isScissors ? RuleId.TakeScissors : RuleId.PlaceCard
 
     return [
       this.material(MaterialType.PlaceMarker).player(this.player)
@@ -137,7 +133,18 @@ export class ChooseActionRule extends PlayerTurnRule {
   }
 
   private getBlockedPositions(): Set<string> {
-    return new Set()
+    const blocked = new Set<string>()
+    const token = this.material(MaterialType.ScissorsToken)
+      .location(LocationType.ScissorsTokenPlayerSpot)
+      .player(this.player)
+      .getItem()
+    const card = token?.location.id !== undefined
+      ? this.material(MaterialType.LandscapeCard).getItem(token.location.id as number)
+      : undefined
+    if (card?.location.x !== undefined && card?.location.y !== undefined) {
+      blocked.add(`${card.location.x},${card.location.y}`)
+    }
+    return blocked
   }
 
   private buildDiscardForSkipMoves(): MaterialMove[] {

@@ -63,9 +63,6 @@ export class PlaceCardRule extends PlayerTurnRule {
     const moves: MaterialMove[] = []
 
     const isScissors = hasScissors(card.id as Landscape)
-    const tokenAtStart = this.material(MaterialType.ScissorsToken)
-      .location(LocationType.ScissorsTokenSpot)
-      .getItem() !== undefined
 
     let newMode = this.mode
     if (this.mode === 0) {
@@ -86,8 +83,8 @@ export class PlaceCardRule extends PlayerTurnRule {
 
     const modeOrRotationChanged = newMode !== this.mode || newRotation !== (this.marker.location.rotation ?? 0)
 
-    // If scissors card and token still unplaced, let TakeScissorsRule handle the decision
-    if (isScissors && tokenAtStart) {
+    // If scissors card placed, let TakeScissorsRule handle the token decision
+    if (isScissors) {
       if (modeOrRotationChanged) moves.push(this.markerMove(newMode, newRotation))
       moves.push(this.startPlayerTurn(RuleId.TakeScissors, this.player))
       return moves
@@ -109,7 +106,18 @@ export class PlaceCardRule extends PlayerTurnRule {
   }
 
   private getBlockedPositions(): Set<string> {
-    return new Set()
+    const blocked = new Set<string>()
+    const token = this.material(MaterialType.ScissorsToken)
+      .location(LocationType.ScissorsTokenPlayerSpot)
+      .player(this.player)
+      .getItem()
+    const card = token?.location.id !== undefined
+      ? this.material(MaterialType.LandscapeCard).getItem(token.location.id as number)
+      : undefined
+    if (card?.location.x !== undefined && card?.location.y !== undefined) {
+      blocked.add(`${card.location.x},${card.location.y}`)
+    }
+    return blocked
   }
 
   private canContinue(mode: number, extraBlocked: Set<string> = new Set(), nextRotation = this.marker.location.rotation ?? 0): boolean {
