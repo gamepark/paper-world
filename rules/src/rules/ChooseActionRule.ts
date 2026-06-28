@@ -3,6 +3,7 @@ import { getLandscapeColor, getLandscapeValue, hasScissors, Landscape } from '..
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { CustomMoveType, TakeByColorData, TakeByValueData } from '../material/CustomMoveType'
+import { Memory } from '../material/Memory'
 import { RuleId } from './RuleId'
 import { getValidSpots, getStackHeight, wasSkipUsed } from './helpers/PlacementHelper'
 
@@ -124,6 +125,8 @@ export class ChooseActionRule extends PlayerTurnRule {
 
     const isScissors = hasScissors(card.id as Landscape)
     const nextRule = isScissors ? RuleId.TakeScissors : RuleId.PlaceCard
+
+    if (isScissors) this.memorize(Memory.LastScissorsCardIndex, move.itemIndex)
 
     return [
       this.material(MaterialType.PlaceMarker).player(this.player)

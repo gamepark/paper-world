@@ -3,6 +3,7 @@ import { getLandscapeColor, getLandscapeValue, hasScissors, Landscape } from '..
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { CustomMoveType } from '../material/CustomMoveType'
+import { Memory } from '../material/Memory'
 import { RuleId } from './RuleId'
 import { getValidSpots, getStackHeight, wasSkipUsed } from './helpers/PlacementHelper'
 
@@ -85,6 +86,7 @@ export class PlaceCardRule extends PlayerTurnRule {
 
     // If scissors card placed, let TakeScissorsRule handle the token decision
     if (isScissors) {
+      this.memorize(Memory.LastScissorsCardIndex, move.itemIndex)
       if (modeOrRotationChanged) moves.push(this.markerMove(newMode, newRotation))
       moves.push(this.startPlayerTurn(RuleId.TakeScissors, this.player))
       return moves
