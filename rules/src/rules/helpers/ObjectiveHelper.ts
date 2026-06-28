@@ -174,8 +174,8 @@ export function isObjectiveCompleted(objective: Objectives, panorama: MaterialIt
 
     case Objectives.OneDiagonalWith234:
       return getDiagonals(map).some(diag => {
-        const vals = new Set(diag.map(c => c.value))
-        return vals.has(2) && vals.has(3) && vals.has(4)
+        const [v0, v1, v2] = diag.map(c => c.value)
+        return (v0 === 2 && v1 === 3 && v2 === 4) || (v0 === 4 && v1 === 3 && v2 === 2)
       })
 
     case Objectives.ThreeStacksOf4s:

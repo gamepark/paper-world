@@ -347,7 +347,7 @@ describe('OneDiagonalWith234', () => {
     ])).toBe(true)
   })
 
-  it('passes with anti-diagonal values 4-3-2 (descending = set {2,3,4})', () => {
+  it('passes with anti-diagonal values 4-3-2 (descending)', () => {
     expect(isObjectiveCompleted(Objectives.OneDiagonalWith234, [
       card(Y4, 2, 0), card(B3, 1, 1), card(G2, 0, 2),
       card(K1, 0, 0), card(Y1, 2, 2)
@@ -357,6 +357,13 @@ describe('OneDiagonalWith234', () => {
   it('fails when diagonal values are {2,3,5} instead of {2,3,4}', () => {
     expect(isObjectiveCompleted(Objectives.OneDiagonalWith234, [
       card(Y2, 0, 0), card(B3, 1, 1), card(G5, 2, 2),
+      card(K1, 2, 0), card(Y1, 0, 2)
+    ])).toBe(false)
+  })
+
+  it('fails when diagonal values are in wrong order [2,4,3]', () => {
+    expect(isObjectiveCompleted(Objectives.OneDiagonalWith234, [
+      card(Y2, 0, 0), card(B4, 1, 1), card(G3, 2, 2),
       card(K1, 2, 0), card(Y1, 0, 2)
     ])).toBe(false)
   })
