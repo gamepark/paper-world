@@ -19,7 +19,6 @@ export class PaperWorldSetup extends MaterialGameSetup<LandscapeColor, MaterialT
     this.setupObjectives()
     this.setupScissorsToken()
     this.setupPlaceMarkers()
-    // TODO
   }
 
   setupLandscapes() {
