@@ -1,28 +1,19 @@
-import { css } from '@emotion/react'
 import { LandscapeColor } from '@gamepark/paper-world/material/Landscape'
-import { StyledPlayerPanel, usePlayers } from '@gamepark/react-game'
+import { usePlayers } from '@gamepark/react-game'
 import { createPortal } from 'react-dom'
+import { PaperWorldPlayerPanel } from './PaperWorldPlayerPanel'
 
 export const PlayerPanels = () => {
   const players = usePlayers<LandscapeColor>({ sortFromMe: true })
   const root = document.getElementById('root')
-  if (!root) {
-    return null
-  }
+  if (!root) return null
 
   return createPortal(
     <>
       {players.map((player, index) => (
-        <StyledPlayerPanel key={player.id} player={player} css={panelPosition(index)} activeRing />
+        <PaperWorldPlayerPanel key={player.id} player={player} index={index} />
       ))}
     </>,
     root
   )
 }
-
-const panelPosition = (index: number) => css`
-  position: absolute;
-  right: 1em;
-  top: ${8.5 + index * 16}em;
-  width: 28em;
-`
