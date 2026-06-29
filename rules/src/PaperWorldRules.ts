@@ -1,5 +1,5 @@
 import { CompetitiveScore, MaterialGame, MaterialMove, MaterialRules, PositiveSequenceStrategy, TimeLimit } from '@gamepark/rules-api'
-import { getLandscapeValue, Landscape, LandscapeColor } from './material/Landscape'
+import { getLandscapeStars, Landscape, LandscapeColor } from './material/Landscape'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { ScoreToken, getScoreTokenValue } from './material/ScoreToken'
@@ -50,7 +50,7 @@ export class PaperWorldRules
     const panoramaScore = [...occupiedPositions].reduce((sum, key) => {
       const [x, y] = key.split(',').map(Number)
       const top = getTopCard(x, y, panorama)
-      return sum + (top ? getLandscapeValue(top.id as Landscape) : 0)
+      return sum + (top ? getLandscapeStars(top.id as Landscape) : 0)
     }, 0)
 
     const tokenScore = this.material(MaterialType.ScoreToken)

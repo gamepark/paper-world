@@ -26,5 +26,11 @@
   "discard.choose": "Défaussez {count} carte(s) de votre main",
   "discard.opponent": "{player} défausse des cartes",
   "objectives.check": "Vérification des objectifs...",
-  "objectives.check.opponent": "{player} vérifie ses objectifs..."
+  "objectives.check.opponent": "{player} vérifie ses objectifs...",
+  "score.panorama": "Cartes visibles",
+  "score.objectives": "Objectifs",
+  "score.scissors": "Jeton Ciseaux",
+  "score.hand": "Cartes en main",
+  "score.discard": "Défausse",
+  "score.total": "Total"
 }

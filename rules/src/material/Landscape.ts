@@ -50,6 +50,9 @@ export const getLandscapeColor = (landscape: Landscape): LandscapeColor => Math.
 export const getLandscapeValue = (landscape: Landscape) => landscape % 5 || 5
 export const hasScissors = (landscape: Landscape) => landscape % 10 > 5
 
+const starsByRank: Record<number, number> = { 1: 0, 2: 1, 3: 2, 4: 3, 5: 5 }
+export const getLandscapeStars = (landscape: Landscape): number => starsByRank[getLandscapeValue(landscape)]
+
 const blueBackLandscapes: Record<Landscape, number> = {
   [Landscape.Yellow1]: 3,
   [Landscape.Yellow2]: 2,
