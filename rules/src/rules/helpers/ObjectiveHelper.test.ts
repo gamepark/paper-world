@@ -1,6 +1,6 @@
 import { MaterialItem } from '@gamepark/rules-api'
 import { describe, expect, it } from 'vitest'
-import { Landscape, LandscapeColor } from '../../material/Landscape'
+import { Landscape } from '../../material/Landscape'
 import { LocationType } from '../../material/LocationType'
 import { Objectives } from '../../material/Objectives'
 import { isObjectiveCompleted } from './ObjectiveHelper'

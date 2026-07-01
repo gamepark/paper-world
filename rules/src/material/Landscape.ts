@@ -39,16 +39,15 @@ export enum Landscape {
   BlackScissors4
 }
 
-export enum LandscapeColor {
-  Yellow = 1,
-  Blue,
-  Green,
-  Black
-}
-
-export const getLandscapeColor = (landscape: Landscape): LandscapeColor => Math.floor(landscape / 10)
+export const getLandscapeColor = (landscape: Landscape): number => Math.floor(landscape / 10)
 export const getLandscapeValue = (landscape: Landscape) => landscape % 5 || 5
 export const hasScissors = (landscape: Landscape) => landscape % 10 > 5
+
+/**
+ * The physical game has 4 dedicated "starting" Landscape cards (value 1, one per color), distinct from the
+ * 96 Landscape cards distributed in the draw piles. They share the same face, only their back differs.
+ */
+export const getStartingLandscape = (player: number): Landscape => (player * 10 + 1) as Landscape
 
 const starsByRank: Record<number, number> = { 1: 0, 2: 1, 3: 2, 4: 3, 5: 5 }
 export const getLandscapeStars = (landscape: Landscape): number => starsByRank[getLandscapeValue(landscape)]
@@ -61,7 +60,7 @@ const blueBackLandscapes: Record<Landscape, number> = {
   [Landscape.Yellow5]: 1,
   [Landscape.YellowScissors1]: 1,
   [Landscape.YellowScissors2]: 1,
-  [Landscape.YellowScissors3]: 0,
+  [Landscape.YellowScissors3]: 1,
   [Landscape.YellowScissors4]: 1,
   [Landscape.Blue1]: 3,
   [Landscape.Blue2]: 2,
@@ -71,14 +70,14 @@ const blueBackLandscapes: Record<Landscape, number> = {
   [Landscape.BlueScissors1]: 1,
   [Landscape.BlueScissors2]: 1,
   [Landscape.BlueScissors3]: 1,
-  [Landscape.BlueScissors4]: 0,
+  [Landscape.BlueScissors4]: 1,
   [Landscape.Green1]: 3,
   [Landscape.Green2]: 3,
   [Landscape.Green3]: 2,
   [Landscape.Green4]: 1,
   [Landscape.Green5]: 1,
   [Landscape.GreenScissors1]: 1,
-  [Landscape.GreenScissors2]: 0,
+  [Landscape.GreenScissors2]: 1,
   [Landscape.GreenScissors3]: 1,
   [Landscape.GreenScissors4]: 1,
   [Landscape.Black1]: 4,
@@ -86,7 +85,7 @@ const blueBackLandscapes: Record<Landscape, number> = {
   [Landscape.Black3]: 2,
   [Landscape.Black4]: 1,
   [Landscape.Black5]: 1,
-  [Landscape.BlackScissors1]: 0,
+  [Landscape.BlackScissors1]: 1,
   [Landscape.BlackScissors2]: 1,
   [Landscape.BlackScissors3]: 1,
   [Landscape.BlackScissors4]: 1

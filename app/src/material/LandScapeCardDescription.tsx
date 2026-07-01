@@ -7,6 +7,7 @@ import { CardDescription, ItemContext, ItemMenuButton } from '@gamepark/react-ga
 import { isMoveItemType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
 import { Trans } from 'react-i18next'
 
+import Back from '../images/paper-cards/back.jpg'
 import Yellow1 from '../images/paper-cards/Yellow1.jpg'
 import Yellow2 from '../images/paper-cards/Yellow2.jpg'
 import Yellow3 from '../images/paper-cards/Yellow3.jpg'
@@ -48,7 +49,7 @@ class LandScapeCardDescription extends CardDescription {
   width = 7
   height = 7
 
-  backImage = Yellow1
+  backImage = Back
 
   images = {
     [Landscape.Yellow1]: Yellow1,

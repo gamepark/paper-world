@@ -1,5 +1,5 @@
 import { css } from '@emotion/react'
-import { getLandscapeStars, Landscape, LandscapeColor } from '@gamepark/paper-world/material/Landscape'
+import { getLandscapeStars, Landscape } from '@gamepark/paper-world/material/Landscape'
 import { LocationType } from '@gamepark/paper-world/material/LocationType'
 import { MaterialType } from '@gamepark/paper-world/material/MaterialType'
 import { PaperWorldRules } from '@gamepark/paper-world/PaperWorldRules'
@@ -13,7 +13,7 @@ type Props = { player: Player; index: number } & HTMLAttributes<HTMLDivElement>
 
 export const PaperWorldPlayerPanel: FC<Props> = ({ player, index, ...rest }) => {
   const rules = useRules<PaperWorldRules>()
-  const stars = rules ? getPanoramaStars(player.id as LandscapeColor, rules) : 0
+  const stars = rules ? getPanoramaStars(player.id as number, rules) : 0
 
   return (
     <StyledPlayerPanel
@@ -26,7 +26,7 @@ export const PaperWorldPlayerPanel: FC<Props> = ({ player, index, ...rest }) => 
   )
 }
 
-function getPanoramaStars(player: LandscapeColor, rules: PaperWorldRules): number {
+function getPanoramaStars(player: number, rules: PaperWorldRules): number {
   const panorama = rules.material(MaterialType.LandscapeCard)
     .location(LocationType.Landscape)
     .player(player)

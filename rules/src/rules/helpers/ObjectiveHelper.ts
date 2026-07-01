@@ -1,9 +1,9 @@
 import { MaterialItem } from '@gamepark/rules-api'
-import { getLandscapeColor, getLandscapeValue, hasScissors, Landscape, LandscapeColor } from '../../material/Landscape'
+import { getLandscapeColor, getLandscapeValue, hasScissors, Landscape } from '../../material/Landscape'
 import { Objectives } from '../../material/Objectives'
 import { getTopCard } from './PlacementHelper'
 
-type CardInfo = { color: LandscapeColor; value: number; scissors: boolean }
+type CardInfo = { color: number; value: number; scissors: boolean }
 type PanoramaMap = Map<string, CardInfo>
 
 function k(x: number, y: number): string {

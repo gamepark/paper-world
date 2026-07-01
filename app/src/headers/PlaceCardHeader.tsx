@@ -2,7 +2,6 @@ import { CustomMoveType } from '@gamepark/paper-world/material/CustomMoveType'
 import { LocationType } from '@gamepark/paper-world/material/LocationType'
 import { MaterialType } from '@gamepark/paper-world/material/MaterialType'
 import { PaperWorldRules } from '@gamepark/paper-world'
-import { LandscapeColor } from '@gamepark/paper-world/material/Landscape'
 import { PlayMoveButton, useLegalMove, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { isCustomMoveType, isMoveItemType } from '@gamepark/rules-api'
 import { useTranslation } from 'react-i18next'
@@ -10,8 +9,8 @@ import { useTranslation } from 'react-i18next'
 export const PlaceCardHeader = () => {
   const { t } = useTranslation()
   const rules = useRules<PaperWorldRules>()
-  const playerId = usePlayerId<LandscapeColor>()
-  const activePlayer = rules?.game.rule?.player as LandscapeColor | undefined
+  const playerId = usePlayerId<number>()
+  const activePlayer = rules?.game.rule?.player as number | undefined
   const activePlayerName = usePlayerName(activePlayer)
 
   const endPlaceMove = useLegalMove(isCustomMoveType(CustomMoveType.EndPlace))

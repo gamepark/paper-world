@@ -1,5 +1,5 @@
-import { CompetitiveScore, MaterialGame, MaterialMove, MaterialRules, PositiveSequenceStrategy, TimeLimit } from '@gamepark/rules-api'
-import { getLandscapeStars, Landscape, LandscapeColor } from './material/Landscape'
+import { CompetitiveScore, hideItemIdToOthers, MaterialGame, MaterialMove, PositiveSequenceStrategy, SecretMaterialRules, TimeLimit } from '@gamepark/rules-api'
+import { getLandscapeStars, Landscape } from './material/Landscape'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { ScoreToken, getScoreTokenValue } from './material/ScoreToken'
@@ -12,10 +12,10 @@ import { PlaceCardRule } from './rules/PlaceCardRule'
 import { TakeScissorsRule } from './rules/TakeScissorsRule'
 
 export class PaperWorldRules
-  extends MaterialRules<LandscapeColor, MaterialType, LocationType>
+  extends SecretMaterialRules<number, MaterialType, LocationType>
   implements
-    TimeLimit<MaterialGame<LandscapeColor, MaterialType, LocationType>, MaterialMove<LandscapeColor, MaterialType, LocationType>, LandscapeColor>,
-    CompetitiveScore<MaterialGame<LandscapeColor, MaterialType, LocationType>, MaterialMove<LandscapeColor, MaterialType, LocationType>, LandscapeColor>
+    TimeLimit<MaterialGame<number, MaterialType, LocationType>, MaterialMove<number, MaterialType, LocationType>, number>,
+    CompetitiveScore<MaterialGame<number, MaterialType, LocationType>, MaterialMove<number, MaterialType, LocationType>, number>
 {
   rules = {
     [RuleId.ChooseAction]: ChooseActionRule,
@@ -23,6 +23,12 @@ export class PaperWorldRules
     [RuleId.DiscardToLimit]: DiscardToLimitRule,
     [RuleId.TakeScissors]: TakeScissorsRule,
     [RuleId.CheckObjectives]: CheckObjectivesRule
+  }
+
+  hidingStrategies = {
+    [MaterialType.LandscapeCard]: {
+      [LocationType.PlayerHand]: hideItemIdToOthers,
+    },
   }
 
   locationsStrategies = {
@@ -40,7 +46,7 @@ export class PaperWorldRules
     return 60
   }
 
-  getScore(player: LandscapeColor): number {
+  getScore(player: number): number {
     const panorama = this.material(MaterialType.LandscapeCard)
       .location(LocationType.Landscape)
       .player(player)
@@ -77,7 +83,7 @@ export class PaperWorldRules
     return panoramaScore + tokenScore + scissorsBonus - handCount - discardCount
   }
 
-  getTieBreaker(tieBreaker: number, player: LandscapeColor): number | undefined {
+  getTieBreaker(tieBreaker: number, player: number): number | undefined {
     if (tieBreaker === 1) {
       // Fewer cards in discard wins (return negative so lower discard = higher rank)
       return -this.material(MaterialType.LandscapeCard)

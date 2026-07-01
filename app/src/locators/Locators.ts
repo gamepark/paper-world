@@ -1,4 +1,3 @@
-import { LandscapeColor } from '@gamepark/paper-world/material/Landscape'
 import { LocationType } from '@gamepark/paper-world/material/LocationType'
 import { MaterialType } from '@gamepark/paper-world/material/MaterialType'
 import { Locator } from '@gamepark/react-game'
@@ -13,7 +12,7 @@ import { playerScoreSpotLocator } from './PlayerScoreSpotLocator'
 import { scissorsTokenPlayerSpotLocator } from './ScissorsTokenPlayerSpotLocator'
 import { scoreTokenSpotLocator } from './ScoreTokenSpotLocator'
 
-export const Locators: Partial<Record<LocationType, Locator<LandscapeColor, MaterialType, LocationType>>> = {
+export const Locators: Partial<Record<LocationType, Locator<number, MaterialType, LocationType>>> = {
   [LocationType.Discard]: discardLocator,
   [LocationType.Pile]: landscapePileLocator,
   [LocationType.Landscape]: landscapeLocator,

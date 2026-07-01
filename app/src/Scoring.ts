@@ -1,4 +1,4 @@
-import { getLandscapeStars, Landscape, LandscapeColor } from '@gamepark/paper-world/material/Landscape'
+import { getLandscapeStars, Landscape } from '@gamepark/paper-world/material/Landscape'
 import { LocationType } from '@gamepark/paper-world/material/LocationType'
 import { MaterialType } from '@gamepark/paper-world/material/MaterialType'
 import { ScoreToken, getScoreTokenValue } from '@gamepark/paper-world/material/ScoreToken'
@@ -17,7 +17,7 @@ const enum ScoringKey {
   Total
 }
 
-export const scoring: ScoringDescription<LandscapeColor, PaperWorldRules> = {
+export const scoring: ScoringDescription<number, PaperWorldRules> = {
   getScoringKeys: () => [
     ScoringKey.Panorama,
     ScoringKey.Objectives,
@@ -50,7 +50,7 @@ export const scoring: ScoringDescription<LandscapeColor, PaperWorldRules> = {
   }
 }
 
-function getPanoramaScore(player: LandscapeColor, rules: PaperWorldRules): number {
+function getPanoramaScore(player: number, rules: PaperWorldRules): number {
   const panorama = rules.material(MaterialType.LandscapeCard)
     .location(LocationType.Landscape)
     .player(player)
@@ -62,7 +62,7 @@ function getPanoramaScore(player: LandscapeColor, rules: PaperWorldRules): numbe
   }, 0)
 }
 
-function getObjectivesScore(player: LandscapeColor, rules: PaperWorldRules): number {
+function getObjectivesScore(player: number, rules: PaperWorldRules): number {
   return rules.material(MaterialType.ScoreToken)
     .location(LocationType.PlayerScoreSpot)
     .player(player)
@@ -70,21 +70,21 @@ function getObjectivesScore(player: LandscapeColor, rules: PaperWorldRules): num
     .reduce((sum, item) => sum + getScoreTokenValue(item.id as ScoreToken), 0)
 }
 
-function getScissorsBonus(player: LandscapeColor, rules: PaperWorldRules): number {
+function getScissorsBonus(player: number, rules: PaperWorldRules): number {
   return rules.material(MaterialType.ScissorsToken)
     .location(LocationType.ScissorsTokenPlayerSpot)
     .player(player)
     .getItem() !== undefined ? 2 : 0
 }
 
-function getHandCount(player: LandscapeColor, rules: PaperWorldRules): number {
+function getHandCount(player: number, rules: PaperWorldRules): number {
   return rules.material(MaterialType.LandscapeCard)
     .location(LocationType.PlayerHand)
     .player(player)
     .getItems().length
 }
 
-function getDiscardCount(player: LandscapeColor, rules: PaperWorldRules): number {
+function getDiscardCount(player: number, rules: PaperWorldRules): number {
   return rules.material(MaterialType.LandscapeCard)
     .location(LocationType.Discard)
     .player(player)

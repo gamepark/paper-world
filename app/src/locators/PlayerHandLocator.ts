@@ -1,13 +1,12 @@
 import { HandLocator, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location } from '@gamepark/rules-api'
-import { LandscapeColor } from '@gamepark/paper-world/material/Landscape'
 
 class PlayerHandLocator extends HandLocator {
   getCoordinates(location: Location, context: MaterialContext): Coordinates {
-    const players = context.rules.players as LandscapeColor[]
-    const viewer = context.player as LandscapeColor | undefined
+    const players = context.rules.players as number[]
+    const viewer = context.player as number | undefined
     const viewerIndex = viewer !== undefined ? players.indexOf(viewer) : 0
-    const locationIndex = players.indexOf(location.player as LandscapeColor)
+    const locationIndex = players.indexOf(location.player as number)
     const seat = (locationIndex - viewerIndex + players.length) % players.length
 
     const z = super.getCoordinates(location, context).z ?? 0

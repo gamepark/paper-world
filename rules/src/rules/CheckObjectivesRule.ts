@@ -1,5 +1,4 @@
 import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
-import { LandscapeColor } from '../material/Landscape'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Memory } from '../material/Memory'
@@ -35,9 +34,9 @@ export class CheckObjectivesRule extends PlayerTurnRule {
     }
 
     const players = this.game.players
-    const nextPlayer = players[(players.indexOf(this.player) + 1) % players.length] as LandscapeColor
+    const nextPlayer = players[(players.indexOf(this.player) + 1) % players.length] as number
 
-    const finalRoundStarter = this.remind<LandscapeColor | undefined>(Memory.FinalRoundStartPlayer)
+    const finalRoundStarter = this.remind<number | undefined>(Memory.FinalRoundStartPlayer)
 
     if (finalRoundStarter !== undefined && nextPlayer === finalRoundStarter) {
       moves.push(this.endGame())
