@@ -12,6 +12,7 @@ type PlayerOptions = { id: number }
 export type PaperWorldOptions = {
   players: PlayerOptions[]
   advancedMode: boolean
+  firstGame: boolean
 }
 
 /**
@@ -29,5 +30,9 @@ export const PaperWorldOptionsSpec: OptionsSpec<PaperWorldOptions> = {
   advancedMode: {
     label: (t) => t('option.advanced'),
     help: (t) => t('option.advanced.help')
+  },
+  firstGame: {
+    label: (t) => t('option.firstGame'),
+    help: (t) => t('option.firstGame.help')
   }
 }

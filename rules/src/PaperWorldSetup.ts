@@ -3,7 +3,7 @@ import { getLandscapes, getStartingLandscape } from './material/Landscape'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { Memory } from './material/Memory'
-import { getRandomObjectives } from './material/Objectives'
+import { beginnerObjectives, getRandomObjectives } from './material/Objectives'
 import { ScoreToken, scoreToken } from './material/ScoreToken'
 import { PaperWorldOptions } from './PaperWorldOptions'
 import { PaperWorldRules } from './PaperWorldRules'
@@ -18,7 +18,7 @@ export class PaperWorldSetup extends MaterialGameSetup<number, MaterialType, Loc
   setupMaterial(options: PaperWorldOptions) {
     if (options.advancedMode) this.memorize(Memory.AdvancedMode, true)
     this.setupLandscapes()
-    this.setupObjectives()
+    this.setupObjectives(options)
     this.setupScissorsToken()
     this.setupPlaceMarkers()
   }
@@ -46,8 +46,8 @@ export class PaperWorldSetup extends MaterialGameSetup<number, MaterialType, Loc
     this.material(MaterialType.LandscapeCard).location(LocationType.Pile).shuffle()
   }
 
-  setupObjectives() {
-    const objectives = getRandomObjectives()
+  setupObjectives(options: PaperWorldOptions) {
+    const objectives = options.firstGame ? beginnerObjectives : getRandomObjectives()
     this.material(MaterialType.ObjectiveCard).createItems(
       objectives.map((objective, index) => ({ id: objective, location: { type: LocationType.ObjectivesSpot, id: index } }))
     )

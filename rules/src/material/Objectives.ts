@@ -28,3 +28,8 @@ const objectives = getEnumValues(Objectives)
 export function getRandomObjectives(): Objectives[] {
   return objectives.sort(() => Math.random() - 0.5).slice(0, 3)
 }
+
+/**
+ * The 3 objective cards marked with a star in the rulebook, recommended for a first game.
+ */
+export const beginnerObjectives: Objectives[] = [Objectives.LOfSameColor, Objectives.OneLineWithValueOf9, Objectives.ThreeStacksWithScissors]
