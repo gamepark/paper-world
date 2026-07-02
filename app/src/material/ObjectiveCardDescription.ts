@@ -1,5 +1,6 @@
 import { Objectives } from '@gamepark/paper-world/material/Objectives'
 import { CardDescription } from '@gamepark/react-game'
+import { ObjectiveCardHelp } from './help/ObjectiveCardHelp'
 
 import Objective01 from '../images/objectives/Objective01.jpg'
 import Objective02 from '../images/objectives/Objective02.jpg'
@@ -25,6 +26,8 @@ import Objective20 from '../images/objectives/Objective20.jpg'
 export class ObjectiveCardDescription extends CardDescription {
   width = 7
   height = 7
+
+  help = ObjectiveCardHelp
 
   images = {
     [Objectives.LOfSameColor]: Objective01,

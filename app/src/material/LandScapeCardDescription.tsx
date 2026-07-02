@@ -6,6 +6,7 @@ import { faArrowDown } from '@fortawesome/free-solid-svg-icons'
 import { CardDescription, ItemContext, ItemMenuButton } from '@gamepark/react-game'
 import { isMoveItemType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
 import { Trans } from 'react-i18next'
+import { LandscapeCardHelp } from './help/LandscapeCardHelp'
 
 import Back from '../images/paper-cards/back.jpg'
 import Yellow1 from '../images/paper-cards/Yellow1.jpg'
@@ -50,6 +51,8 @@ class LandScapeCardDescription extends CardDescription {
   height = 7
 
   backImage = Back
+
+  help = LandscapeCardHelp
 
   images = {
     [Landscape.Yellow1]: Yellow1,

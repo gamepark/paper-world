@@ -1,5 +1,6 @@
 import { ScoreToken } from '@gamepark/paper-world/material/ScoreToken'
 import { TokenDescription } from '@gamepark/react-game'
+import { ScoreTokenHelp } from './help/ScoreTokenHelp'
 
 import ScoreToken1 from '../images/tokens/ScoreToken1.jpg'
 import ScoreToken2 from '../images/tokens/ScoreToken2.jpg'
@@ -9,6 +10,8 @@ class ScoreTokenDescription extends TokenDescription {
   width = 2.5
   height = 2.5
   borderRadius = 50
+
+  help = ScoreTokenHelp
 
   images = {
     [ScoreToken.ScoreToken1]: ScoreToken1,
