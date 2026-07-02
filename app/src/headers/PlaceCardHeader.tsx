@@ -18,9 +18,12 @@ export const PlaceCardHeader = () => {
     m => isMoveItemType(MaterialType.LandscapeCard)(m) && m.location.type === LocationType.Discard
   )
 
+  const advancedMode = !!rules?.isAdvancedMode()
   const marker = rules?.material(MaterialType.PlaceMarker).player(activePlayer!).getItem()
   const mode = marker?.location.id ?? 0
-  const skipPending = (marker?.location.rotation ?? 0) === 1
+  const rotation = marker?.location.rotation ?? 0
+  const skipPending = !advancedMode && rotation === 1
+  const pendingDiscards = advancedMode ? rotation : 0
 
   if (activePlayer !== playerId) {
     return <>{t('place.opponent', { player: activePlayerName })}</>
@@ -29,11 +32,13 @@ export const PlaceCardHeader = () => {
   return <>
     {skipPending
       ? t('place.skip.pending')
+      : pendingDiscards > 0
+      ? t('place.skip.pending.count', { count: pendingDiscards })
       : mode === 0 ? t('place.first')
       : mode === 1 ? t('place.color')
       : t('place.value')
     }
-    {!skipPending && hasDiscardForSkip && <>&nbsp;{t('place.skip')}</>}
+    {!skipPending && hasDiscardForSkip && <>&nbsp;{t(advancedMode ? 'place.skip.advanced' : 'place.skip')}</>}
     {endPlaceMove && <>&nbsp;<PlayMoveButton move={endPlaceMove}>{t('place.end')}</PlayMoveButton></>}
   </>
 }

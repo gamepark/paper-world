@@ -2,6 +2,7 @@ import { MaterialGameSetup } from '@gamepark/rules-api'
 import { getLandscapes, getStartingLandscape } from './material/Landscape'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
+import { Memory } from './material/Memory'
 import { getRandomObjectives } from './material/Objectives'
 import { ScoreToken, scoreToken } from './material/ScoreToken'
 import { PaperWorldOptions } from './PaperWorldOptions'
@@ -14,7 +15,8 @@ import { RuleId } from './rules/RuleId'
 export class PaperWorldSetup extends MaterialGameSetup<number, MaterialType, LocationType, PaperWorldOptions> {
   Rules = PaperWorldRules
 
-  setupMaterial(_options: PaperWorldOptions) {
+  setupMaterial(options: PaperWorldOptions) {
+    if (options.advancedMode) this.memorize(Memory.AdvancedMode, true)
     this.setupLandscapes()
     this.setupObjectives()
     this.setupScissorsToken()

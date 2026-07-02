@@ -1,4 +1,6 @@
 export enum Memory {
   FinalRoundStartPlayer = 1,
-  LastScissorsCardIndex
+  LastScissorsCardIndex,
+  AdvancedMode,
+  ScissorsDiscountUsed
 }

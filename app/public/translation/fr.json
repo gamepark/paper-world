@@ -1,4 +1,6 @@
 {
+  "option.advanced": "Mode avancé",
+  "option.advanced.help": "Le Saut peut être réalisé plusieurs fois par tour et sur plusieurs cartes d'écart (défaussez autant de cartes que de rangs sautés). Le jeton Ciseaux réduit alors le coût d'un saut de 1 carte lors de votre tour, au lieu d'offrir un saut gratuit à chaque tour.",
   "button.take": "Prendre",
   "take.choose": "Prenez une carte d'une pile ou posez une carte de votre main",
   "take.opponent": "{player} choisit entre prendre ou poser des cartes",
@@ -17,6 +19,8 @@
   "place.end": "Terminer la pose",
   "place.skip": "Défaussez une carte pour sauter un rang",
   "place.skip.pending": "Saut activé — posez votre carte",
+  "place.skip.advanced": "Défaussez une carte pour préparer ou agrandir un saut",
+  "place.skip.pending.count": "Saut préparé ({count} carte(s) défaussée(s)) — posez votre carte ou défaussez encore pour sauter plus loin",
   "scissors.take": "Prendre",
   "scissors.skip": "Laisser",
   "scissors.decision": "Voulez-vous prendre le jeton ciseaux ?",

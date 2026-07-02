@@ -2,6 +2,7 @@ import { CompetitiveScore, hideItemIdToOthers, MaterialGame, MaterialMove, Posit
 import { getLandscapeStars, Landscape } from './material/Landscape'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
+import { Memory } from './material/Memory'
 import { ScoreToken, getScoreTokenValue } from './material/ScoreToken'
 import { RuleId } from './rules/RuleId'
 import { getOccupiedPositions, getTopCard } from './rules/helpers/PlacementHelper'
@@ -44,6 +45,10 @@ export class PaperWorldRules
 
   giveTime(): number {
     return 60
+  }
+
+  isAdvancedMode(): boolean {
+    return !!this.remind(Memory.AdvancedMode)
   }
 
   getScore(player: number): number {

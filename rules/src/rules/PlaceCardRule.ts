@@ -1,11 +1,11 @@
-import { CustomMove, isMoveItemType, isCustomMoveType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { CustomMove, isMoveItemType, isCustomMoveType, ItemMove, MaterialItem, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { getLandscapeColor, getLandscapeValue, hasScissors, Landscape } from '../material/Landscape'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { CustomMoveType } from '../material/CustomMoveType'
 import { Memory } from '../material/Memory'
 import { RuleId } from './RuleId'
-import { getValidSpots, getStackHeight, wasSkipUsed } from './helpers/PlacementHelper'
+import { consumeAdvancedSkip, getAdvancedMaxSkip, getSkipLevel, getValidSpots, getStackHeight } from './helpers/PlacementHelper'
 
 export class PlaceCardRule extends PlayerTurnRule {
   get marker() {
@@ -15,9 +15,19 @@ export class PlaceCardRule extends PlayerTurnRule {
   get firstColor(): number { return this.marker.location.x! }
   get firstValue(): number { return this.marker.location.y! }
   get mode(): number { return this.marker.location.id ?? 0 }
-  // rotation: 0=saut disponible, 1=saut en attente (payé par défausse), 2=saut épuisé ce tour
+  // rotation (mode de base): 0=saut disponible, 1=saut en attente (payé par défausse), 2=saut épuisé ce tour
+  // rotation (mode avancé): nombre de cartes défaussées en attente d'un saut
   get skipPending(): boolean { return (this.marker.location.rotation ?? 0) === 1 }
   get skipExhausted(): boolean { return (this.marker.location.rotation ?? 0) === 2 }
+  get pendingDiscards(): number { return this.marker.location.rotation ?? 0 }
+
+  get advancedMode(): boolean {
+    return !!this.remind(Memory.AdvancedMode)
+  }
+
+  get discountUsed(): boolean {
+    return !!this.remind(Memory.ScissorsDiscountUsed, this.player)
+  }
 
   private playerHasToken(): boolean {
     return this.material(MaterialType.ScissorsToken)
@@ -27,7 +37,10 @@ export class PlaceCardRule extends PlayerTurnRule {
   }
 
   onRuleStart(): MaterialMove[] {
-    if (!this.canContinue(this.mode)) {
+    const canContinue = this.advancedMode
+      ? this.canContinueAdvanced(this.mode, this.pendingDiscards)
+      : this.canContinue(this.mode)
+    if (!canContinue) {
       return this.endPlacementMoves()
     }
     return []
@@ -36,10 +49,17 @@ export class PlaceCardRule extends PlayerTurnRule {
   getPlayerMoves(): MaterialMove[] {
     const moves: MaterialMove[] = [this.customMove(CustomMoveType.EndPlace, {})]
 
+    if (this.advancedMode) {
+      const maxSkip = getAdvancedMaxSkip(this.pendingDiscards, this.playerHasToken(), this.discountUsed)
+      moves.push(...this.buildPlacementMoves(this.mode, maxSkip))
+      moves.push(...this.buildAdvancedDiscardForSkipMoves(maxSkip))
+      return moves
+    }
+
     const hasFreeSkip = this.playerHasToken() && !this.skipPending && !this.skipExhausted
     const skipAvailable = this.skipPending || hasFreeSkip
 
-    moves.push(...this.buildPlacementMoves(this.mode, skipAvailable))
+    moves.push(...this.buildPlacementMoves(this.mode, skipAvailable ? 1 : 0))
 
     if (!this.skipPending && !this.skipExhausted && !hasFreeSkip) {
       moves.push(...this.buildDiscardForSkipMoves())
@@ -53,7 +73,8 @@ export class PlaceCardRule extends PlayerTurnRule {
 
     // Activation du saut par défausse
     if (move.location.type === LocationType.Discard) {
-      return [this.markerMove(this.mode, 1)]
+      const rotation = this.advancedMode ? this.pendingDiscards + 1 : 1
+      return [this.markerMove(this.mode, rotation)]
     }
 
     if (move.location.type !== LocationType.Landscape) return []
@@ -78,9 +99,18 @@ export class PlaceCardRule extends PlayerTurnRule {
 
     const panorama = this.material(MaterialType.LandscapeCard)
       .location(LocationType.Landscape).player(this.player).getItems()
-    const skipWasAvailable = this.skipPending || (this.playerHasToken() && !this.skipExhausted)
-    const skipUsed = skipWasAvailable && wasSkipUsed(card.id as Landscape, move.location.x!, move.location.y!, move.location.id as number, panorama)
-    const newRotation = skipUsed ? 2 : (this.marker.location.rotation ?? 0)
+
+    let newRotation: number
+    if (this.advancedMode) {
+      const skipLevel = getSkipLevel(card.id as Landscape, move.location.x!, move.location.y!, move.location.id as number, panorama)
+      const result = consumeAdvancedSkip(this.pendingDiscards, this.discountUsed, skipLevel, this.playerHasToken())
+      if (result.discountUsed !== this.discountUsed) this.memorize(Memory.ScissorsDiscountUsed, true, this.player)
+      newRotation = result.pendingDiscards
+    } else {
+      const skipWasAvailable = this.skipPending || (this.playerHasToken() && !this.skipExhausted)
+      const skipUsed = skipWasAvailable && getSkipLevel(card.id as Landscape, move.location.x!, move.location.y!, move.location.id as number, panorama) > 0
+      newRotation = skipUsed ? 2 : (this.marker.location.rotation ?? 0)
+    }
 
     const modeOrRotationChanged = newMode !== this.mode || newRotation !== (this.marker.location.rotation ?? 0)
 
@@ -92,7 +122,11 @@ export class PlaceCardRule extends PlayerTurnRule {
       return moves
     }
 
-    if (!this.canContinue(newMode, new Set(), newRotation)) {
+    const canContinue = this.advancedMode
+      ? this.canContinueAdvanced(newMode, newRotation)
+      : this.canContinue(newMode, new Set(), newRotation)
+
+    if (!canContinue) {
       return [...moves, ...this.endPlacementMoves()]
     }
 
@@ -139,17 +173,39 @@ export class PlaceCardRule extends PlayerTurnRule {
       if (seenIds.has(cardId)) continue
       seenIds.add(cardId)
       if (!this.matchesFilter(cardId, mode)) continue
-      const normalSpots = getValidSpots(cardId, panorama, blocked, false)
+      const normalSpots = getValidSpots(cardId, panorama, blocked, 0)
       if (normalSpots.length > 0) return true
       if (canSkip) {
-        const skipSpots = getValidSpots(cardId, panorama, blocked, true)
+        const skipSpots = getValidSpots(cardId, panorama, blocked, 1)
         if (skipSpots.length > normalSpots.length) return true
       }
     }
     return false
   }
 
-  private buildPlacementMoves(mode: number, skipAvailable: boolean): MaterialMove[] {
+  private canContinueAdvanced(mode: number, nextPendingDiscards: number): boolean {
+    const blocked = this.getBlockedPositions()
+    const panorama = this.material(MaterialType.LandscapeCard)
+      .location(LocationType.Landscape).player(this.player).getItems()
+    const handItems = this.material(MaterialType.LandscapeCard)
+      .location(LocationType.PlayerHand).player(this.player).getItems()
+
+    const maxSkip = getAdvancedMaxSkip(nextPendingDiscards, this.playerHasToken(), this.discountUsed)
+
+    const seenIds = new Set<number>()
+    for (const handItem of handItems) {
+      const cardId = handItem.id as Landscape
+      if (seenIds.has(cardId)) continue
+      seenIds.add(cardId)
+      if (!this.matchesFilter(cardId, mode)) continue
+      if (getValidSpots(cardId, panorama, blocked, maxSkip).length > 0) return true
+      // Une défausse de plus (si le joueur a encore des cartes à défausser) pourrait débloquer un saut
+      if (getValidSpots(cardId, panorama, blocked, maxSkip + 1).length > 0) return true
+    }
+    return false
+  }
+
+  private buildPlacementMoves(mode: number, maxSkip: number): MaterialMove[] {
     const moves: MaterialMove[] = []
     const blocked = this.getBlockedPositions()
     const panorama = this.material(MaterialType.LandscapeCard)
@@ -163,7 +219,7 @@ export class PlaceCardRule extends PlayerTurnRule {
       if (seenIds.has(cardId)) continue
       seenIds.add(cardId)
       if (!this.matchesFilter(cardId, mode)) continue
-      for (const [x, y] of getValidSpots(cardId, panorama, blocked, skipAvailable)) {
+      for (const [x, y] of getValidSpots(cardId, panorama, blocked, maxSkip)) {
         const stackHeight = getStackHeight(x, y, panorama)
         moves.push(
           this.material(MaterialType.LandscapeCard)
@@ -187,13 +243,37 @@ export class PlaceCardRule extends PlayerTurnRule {
     const skipWouldHelp = handItems.some(handItem => {
       const cardId = handItem.id as Landscape
       if (!this.matchesFilter(cardId, this.mode)) return false
-      const normal = getValidSpots(cardId, panorama, blocked, false)
-      const withSkip = getValidSpots(cardId, panorama, blocked, true)
+      const normal = getValidSpots(cardId, panorama, blocked, 0)
+      const withSkip = getValidSpots(cardId, panorama, blocked, 1)
       return withSkip.length > normal.length
     })
 
     if (!skipWouldHelp) return []
 
+    return this.discardHandMoves(handItems)
+  }
+
+  private buildAdvancedDiscardForSkipMoves(maxSkip: number): MaterialMove[] {
+    const blocked = this.getBlockedPositions()
+    const panorama = this.material(MaterialType.LandscapeCard)
+      .location(LocationType.Landscape).player(this.player).getItems()
+    const handItems = this.material(MaterialType.LandscapeCard)
+      .location(LocationType.PlayerHand).player(this.player).getItems()
+
+    const skipWouldHelp = handItems.some(handItem => {
+      const cardId = handItem.id as Landscape
+      if (!this.matchesFilter(cardId, this.mode)) return false
+      const current = getValidSpots(cardId, panorama, blocked, maxSkip)
+      const withOneMore = getValidSpots(cardId, panorama, blocked, maxSkip + 1)
+      return withOneMore.length > current.length
+    })
+
+    if (!skipWouldHelp) return []
+
+    return this.discardHandMoves(handItems)
+  }
+
+  private discardHandMoves(handItems: MaterialItem[]): MaterialMove[] {
     const moves: MaterialMove[] = []
     const seenIds = new Set<number>()
     for (const handItem of handItems) {
