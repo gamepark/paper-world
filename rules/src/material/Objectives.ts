@@ -1,4 +1,5 @@
 import { getEnumValues } from '@gamepark/rules-api'
+import { shuffle } from 'es-toolkit'
 
 export enum Objectives {
   LOfSameColor = 1,
@@ -26,7 +27,7 @@ export enum Objectives {
 const objectives = getEnumValues(Objectives)
 
 export function getRandomObjectives(): Objectives[] {
-  return objectives.sort(() => Math.random() - 0.5).slice(0, 3)
+  return shuffle(objectives).slice(0, 3)
 }
 
 /**
