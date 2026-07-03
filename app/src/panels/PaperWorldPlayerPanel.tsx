@@ -6,8 +6,9 @@ import { PaperWorldRules } from '@gamepark/paper-world/PaperWorldRules'
 import { getOccupiedPositions, getTopCard } from '@gamepark/paper-world/rules/helpers/PlacementHelper'
 import { Player } from '@gamepark/react-client'
 import { StyledPlayerPanel, useRules } from '@gamepark/react-game'
-import { FC, HTMLAttributes } from 'react'
+import { CSSProperties, FC, HTMLAttributes } from 'react'
 import starImage from '../images/star.png'
+import { getPlayerColor } from '../theme/colors'
 
 type Props = { player: Player; index: number } & HTMLAttributes<HTMLDivElement>
 
@@ -20,6 +21,7 @@ export const PaperWorldPlayerPanel: FC<Props> = ({ player, index, ...rest }) => 
       player={player}
       activeRing
       css={panelPosition(index)}
+      style={{ '--pw-player-color': getPlayerColor(player.id as number) } as CSSProperties}
       mainCounter={{ image: starImage, value: stars }}
       {...rest}
     />

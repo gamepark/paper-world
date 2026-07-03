@@ -10,6 +10,7 @@ import { PaperWorldLogs } from './history/PaperWorldLogs'
 import { Locators } from './locators/Locators'
 import { Material, materialI18n } from './material/Material'
 import { scoring } from './Scoring'
+import { theme } from './theme'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -24,6 +25,7 @@ createRoot(document.getElementById('root')!).render(
       animations={gameAnimations}
       scoring={scoring}
       logs={new PaperWorldLogs()}
+      theme={theme}
     >
       <App />
     </GameProvider>

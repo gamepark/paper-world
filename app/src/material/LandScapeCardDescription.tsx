@@ -3,10 +3,12 @@ import { LocationType } from '@gamepark/paper-world/material/LocationType'
 import { MaterialType } from '@gamepark/paper-world/material/MaterialType'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowDown } from '@fortawesome/free-solid-svg-icons'
-import { CardDescription, ItemContext, ItemMenuButton } from '@gamepark/react-game'
+import { css } from '@emotion/react'
+import { CardDescription, ItemContext, ItemMenuButton, transformCss } from '@gamepark/react-game'
 import { isMoveItemType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
 import { Trans } from 'react-i18next'
 import { LandscapeCardHelp } from './help/LandscapeCardHelp'
+import { colors } from '../theme/colors'
 
 import Back from '../images/paper-cards/back.jpg'
 import Yellow1 from '../images/paper-cards/Yellow1.jpg'
@@ -105,8 +107,41 @@ class LandScapeCardDescription extends CardDescription {
       m.itemIndex === context.index
     )
     if (!prendreMove) return undefined
-    return <ItemMenuButton move={prendreMove} x={-2} y={0} label={<Trans i18nKey={"button.take"} />} labelPosition="right"><FontAwesomeIcon icon={faArrowDown} /></ItemMenuButton>
+    return (
+      <ItemMenuButton
+        move={prendreMove}
+        x={-2} y={0}
+        css={[takeButtonCss, transformCss('translate(-50%, -50%)', 'translate(-2em, 0em)')]}
+        label={<Trans i18nKey={"button.take"} />}
+        labelPosition="right"
+      >
+        <FontAwesomeIcon icon={faArrowDown} />
+      </ItemMenuButton>
+    )
   }
 }
+
+// Reproduces the base shape/position of the framework's ItemMenuButton (not exposed as a
+// reusable style). The color declarations need !important: ItemMenuButton renders its own
+// (non-important) background/color internally, after this css prop is resolved, so only
+// !important reliably wins the cascade regardless of emotion's insertion order here.
+const takeButtonCss = css`
+  width: 2em;
+  height: 2em;
+  border-radius: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: ${colors.amber} !important;
+  color: ${colors.ink} !important;
+  border: 0.12em solid ${colors.ink} !important;
+  cursor: pointer;
+  box-shadow: 0 0.15em 0.3em rgba(0, 0, 0, 0.35);
+  transition: background-color 150ms ease;
+
+  &:hover {
+    background-color: ${colors.gold} !important;
+  }
+`
 
 export const landscapeCardDescription = new LandScapeCardDescription()
