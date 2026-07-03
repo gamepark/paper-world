@@ -8,15 +8,13 @@ import { OPPONENT_SCALE } from './PlayerRowLayout'
 
 class ScissorsTokenPlayerSpotLocator extends Locator {
   getCoordinates(location: Location, context: MaterialContext) {
-    const allCards = (context.rules.game as any).items?.[MaterialType.LandscapeCard] as any[] | undefined
     const scissorsCard = location.id !== undefined
-      ? allCards?.[location.id]
-      : allCards?.find((item: any) =>
-          item != null &&
-          item.location?.type === LocationType.Landscape &&
-          item.location?.player === location.player &&
-          hasScissors(item.id as Landscape)
-        )
+      ? context.rules.material(MaterialType.LandscapeCard).getItem(location.id)
+      : context.rules.material(MaterialType.LandscapeCard)
+          .location(LocationType.Landscape)
+          .player(location.player)
+          .getItems()
+          .find(item => hasScissors(item.id as Landscape))
     if (!scissorsCard) return {}
     const coords = landscapeLocator.getCoordinates(scissorsCard.location as Location, context)
     return coords ? { ...coords, z: 5 } : {}
