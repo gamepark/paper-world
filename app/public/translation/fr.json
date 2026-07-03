@@ -66,5 +66,17 @@
   "help.scissors.bonus.desc.advanced": "Mode avancé : le jeton Ciseaux réduit de 1 carte le coût d'un seul saut lors de votre tour, au lieu d'offrir un saut gratuit.",
   "help.scissors.malus.title": "Malus",
   "help.scissors.malus.desc": "Le jeton Ciseaux bloque la pile sur laquelle il est posé : vous ne pouvez plus y poser de carte tant qu'il y reste. Pour la libérer, soit un adversaire récupère le jeton, soit vous posez une nouvelle carte Ciseaux.",
-  "help.scissors.score": "En fin de partie, le jeton Ciseaux rapporte 2 points supplémentaires au joueur qui le possède sur une de ses piles."
+  "help.scissors.score": "En fin de partie, le jeton Ciseaux rapporte 2 points supplémentaires au joueur qui le possède sur une de ses piles.",
+  "log.take.value": "{player} pioche les cartes de valeur {value}",
+  "log.take.color": "{player} pioche les cartes {color}",
+  "log.color.1": "jaunes",
+  "log.color.2": "bleues",
+  "log.color.3": "vertes",
+  "log.color.4": "noires",
+  "log.place": "{player} pose <card></card>",
+  "log.discard.skip": "{player} défausse une carte pour préparer un Saut",
+  "log.discard.limit": "{player} défausse <card></card>",
+  "log.scissors.take": "{player} récupère le jeton Ciseaux",
+  "log.scissors.skip": "{player} laisse le jeton Ciseaux",
+  "log.objective.completed": "{player} remplit <card></card> et gagne {points} point(s)"
 }
