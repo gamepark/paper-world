@@ -1,22 +1,7 @@
-import { Locator, MaterialContext } from '@gamepark/react-game'
-import { Location } from '@gamepark/rules-api'
+import { Locator } from '@gamepark/react-game'
 
 class ScissorsTokenSpotLocator extends Locator {
-  coordinates = { x: 10, y: -25 }
-
-  getCoordinates(location: Location, context: MaterialContext) {
-    const numberOfPlayers = context.rules.players.length
-    const { x, y } = super.getCoordinates(location, context)
-    if (numberOfPlayers === 4) {
-      return { x, y: 0 }
-    } else {
-      return { x, y }
-    }
-  }
-
-  getPositionDependencies(_location: Location, context: MaterialContext) {
-    return { players: context.rules.players.length }
-  }
+  coordinates = { x: 18, y: -5 }
 }
 
 export const scissorsTokenSpotLocator = new ScissorsTokenSpotLocator()

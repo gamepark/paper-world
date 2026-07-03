@@ -1,4 +1,3 @@
-import { css } from '@emotion/react'
 import { getLandscapeStars, Landscape } from '@gamepark/paper-world/material/Landscape'
 import { LocationType } from '@gamepark/paper-world/material/LocationType'
 import { MaterialType } from '@gamepark/paper-world/material/MaterialType'
@@ -10,9 +9,9 @@ import { CSSProperties, FC, HTMLAttributes } from 'react'
 import starImage from '../images/star.png'
 import { getPlayerColor } from '../theme/colors'
 
-type Props = { player: Player; index: number } & HTMLAttributes<HTMLDivElement>
+type Props = { player: Player } & HTMLAttributes<HTMLDivElement>
 
-export const PaperWorldPlayerPanel: FC<Props> = ({ player, index, ...rest }) => {
+export const PaperWorldPlayerPanel: FC<Props> = ({ player, ...rest }) => {
   const rules = useRules<PaperWorldRules>()
   const stars = rules ? getPanoramaStars(player.id as number, rules) : 0
 
@@ -20,7 +19,6 @@ export const PaperWorldPlayerPanel: FC<Props> = ({ player, index, ...rest }) => 
     <StyledPlayerPanel
       player={player}
       activeRing
-      css={panelPosition(index)}
       style={{ '--pw-player-color': getPlayerColor(player.id as number) } as CSSProperties}
       mainCounter={{ image: starImage, value: stars }}
       {...rest}
@@ -39,10 +37,3 @@ function getPanoramaStars(player: number, rules: PaperWorldRules): number {
     return sum + (top ? getLandscapeStars(top.id as Landscape) : 0)
   }, 0)
 }
-
-const panelPosition = (index: number) => css`
-  position: absolute;
-  right: 1em;
-  top: ${8.5 + index * 16}em;
-  width: 28em;
-`

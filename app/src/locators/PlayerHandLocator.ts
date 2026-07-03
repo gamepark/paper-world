@@ -1,20 +1,41 @@
-import { HandLocator, MaterialContext } from '@gamepark/react-game'
-import { Coordinates, Location } from '@gamepark/rules-api'
+import { getRelativePlayerIndex, HandLocator, ItemContext, MaterialContext } from '@gamepark/react-game'
+import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
+import { getColumnCenterX, getColumnWidth, HAND_Y_OFFSET, OPPONENT_SCALE, OWN_HAND_Y_OFFSET, ROW_Y } from './PlayerRowLayout'
 
 class PlayerHandLocator extends HandLocator {
   getCoordinates(location: Location, context: MaterialContext): Coordinates {
-    const players = context.rules.players as number[]
-    const viewer = context.player as number | undefined
-    const viewerIndex = viewer !== undefined ? players.indexOf(viewer) : 0
-    const locationIndex = players.indexOf(location.player as number)
-    const seat = (locationIndex - viewerIndex + players.length) % players.length
-
+    const playerIndex = getRelativePlayerIndex(context, location.player)
+    const playerCount = context.rules.players.length
+    const scale = this.getScale(location, context)
+    const x = getColumnCenterX(playerIndex, playerCount) - getColumnWidth(playerIndex, playerCount) * 0.1
+    const y = ROW_Y + (playerIndex === 0 ? OWN_HAND_Y_OFFSET : HAND_Y_OFFSET * scale)
     const z = super.getCoordinates(location, context).z ?? 0
-    switch (seat) {
-      case 0: return { x: -27, y: 25, z }
-      case 1: return { x: 30, y: 25, z }
-      default: return { x: 0, y: 25, z }
-    }
+    return { x, y, z }
+  }
+
+  getScale(location: Location, context: MaterialContext): number {
+    const playerIndex = getRelativePlayerIndex(context, location.player)
+    return playerIndex === 0 ? 1 : OPPONENT_SCALE
+  }
+
+  getMaxAngle(_location: Location, _context: MaterialContext): number {
+    return this.maxAngle / 2
+  }
+
+  getGapMaxAngle(location: Location, context: MaterialContext): number {
+    const playerIndex = getRelativePlayerIndex(context, location.player)
+    return playerIndex === 0 ? this.gapMaxAngle / 2 : 0.5
+  }
+
+  getRadius(location: Location, context: MaterialContext): number {
+    return this.radius * this.getScale(location, context)
+  }
+
+  placeItem(item: MaterialItem, context: ItemContext) {
+    const transform = super.placeItem(item, context)
+    const scale = this.getScale(item.location, context)
+    if (scale !== 1) transform.push(`scale(${scale})`)
+    return transform
   }
 
   getBaseAngle(): number {

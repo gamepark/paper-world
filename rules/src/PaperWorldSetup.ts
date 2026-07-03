@@ -1,5 +1,5 @@
 import { MaterialGameSetup } from '@gamepark/rules-api'
-import { getLandscapes, getStartingLandscape } from './material/Landscape'
+import { getLandscapes, getStartingLandscape, Landscape } from './material/Landscape'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { Memory } from './material/Memory'
@@ -21,6 +21,7 @@ export class PaperWorldSetup extends MaterialGameSetup<number, MaterialType, Loc
     this.setupObjectives(options)
     this.setupScissorsToken()
     this.setupPlaceMarkers()
+    //this.testLocators()
   }
 
   setupLandscapes() {
@@ -66,6 +67,51 @@ export class PaperWorldSetup extends MaterialGameSetup<number, MaterialType, Loc
       this.material(MaterialType.PlaceMarker).createItem({
         location: { type: LocationType.PlaceState, player, x: 0 }
       })
+    }
+  }
+
+  /**
+   * Dev-only helper: fills every player's hand, discard, 3x3 landscape and objective
+   * spots so the whole table layout can be checked at a glance without playing turns.
+   */
+  testLocators() {
+    const landscapes = getLandscapes(this.players.length)
+    let index = 0
+    const nextLandscape = () => landscapes[index++ % landscapes.length]
+
+    for (const player of this.players) {
+      this.material(MaterialType.LandscapeCard).createItems(
+        Array.from({ length: 9 }, () => ({ id: nextLandscape(), location: { type: LocationType.PlayerHand, player } }))
+      )
+
+      this.material(MaterialType.LandscapeCard).createItem({
+        id: nextLandscape(),
+        location: { type: LocationType.Discard, player }
+      })
+
+      for (let x = -1; x <= 1; x++) {
+        for (let y = -1; y <= 1; y++) {
+          if (x === 0 && y === 0) continue // starting landscape is already there
+          // The last cell (1, 1) always gets a scissors-variant card, so the scissors
+          // token (below) has a guaranteed spot to sit on for this player.
+          const id = x === 1 && y === 1 ? Landscape.YellowScissors1 : nextLandscape()
+          this.material(MaterialType.LandscapeCard).createItem({
+            id,
+            location: { type: LocationType.Landscape, player, x, y }
+          })
+        }
+      }
+
+      this.material(MaterialType.ScissorsToken).createItem({
+        location: { type: LocationType.ScissorsTokenPlayerSpot, player }
+      })
+
+      for (let i = 0; i < 3; i++) {
+        this.material(MaterialType.ScoreToken).createItem({
+          id: ScoreToken.ScoreToken1,
+          location: { type: LocationType.PlayerScoreSpot, player, id: i }
+        })
+      }
     }
   }
 

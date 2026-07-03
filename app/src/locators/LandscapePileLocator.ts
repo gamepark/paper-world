@@ -3,17 +3,8 @@ import { Location } from '@gamepark/rules-api'
 import { landscapeCardDescription } from '../material/LandScapeCardDescription'
 
 class LandscapePileLocator extends DeckLocator {
-  getCoordinates(location: Location, context: MaterialContext) {
-    const numberOfPlayers = context.rules.players.length
-    if (numberOfPlayers === 4) {
-      return { x: 0, y: -10 + landscapeCardDescription.width * location.id! + location.id! * 0.5 }
-    } else {
-      return { x: -35 + landscapeCardDescription.width * location.id! + location.id! * 0.5, y: -25 }
-    }
-  }
-
-  getPositionDependencies(_location: Location, context: MaterialContext) {
-    return { players: context.rules.players.length }
+  getCoordinates(location: Location, _context: MaterialContext) {
+    return { x: 10 + landscapeCardDescription.width * location.id! + location.id!, y: -15 }
   }
 }
 

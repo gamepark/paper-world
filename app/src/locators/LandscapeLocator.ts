@@ -1,21 +1,8 @@
 import { LandscapeHelper } from '@gamepark/paper-world/rules/helpers/LandscapeHelper'
-import { getRelativePlayerIndex, Locator, MaterialContext } from '@gamepark/react-game'
-import { Location } from '@gamepark/rules-api'
+import { getRelativePlayerIndex, ItemContext, Locator, MaterialContext } from '@gamepark/react-game'
+import { Location, MaterialItem } from '@gamepark/rules-api'
 import { landscapeCardDescription } from '../material/LandScapeCardDescription'
-
-export enum Position {
-  TopLeft,
-  TopRight,
-  BottomLeft,
-  BottomCenter,
-  BottomRight
-}
-
-export const playerPositions = [
-  [Position.BottomLeft, Position.BottomRight], // 2 players
-  [Position.BottomLeft, Position.BottomCenter, Position.BottomRight], // 3 players
-  [Position.BottomLeft, Position.TopLeft, Position.TopRight, Position.BottomRight] // 4 players
-]
+import { getColumnCenterX, OPPONENT_SCALE, ROW_Y } from './PlayerRowLayout'
 
 class LandscapeLocator extends Locator {
   getCoordinates(location: Location, context: MaterialContext) {
@@ -23,9 +10,10 @@ class LandscapeLocator extends Locator {
     const { x, y } = this.getBaseCoordinates(location, context)
     const deltaX = (xMin + xMax) / 2
     const deltaY = (yMin + yMax) / 2
+    const scale = this.getScale(location, context)
     return {
-      x: x + (location.x! - deltaX) * (landscapeCardDescription.width + 0.2),
-      y: y + (location.y! - deltaY) * (landscapeCardDescription.height + 0.2),
+      x: x + (location.x! - deltaX) * (landscapeCardDescription.width + 0.2) * scale,
+      y: y + (location.y! - deltaY) * (landscapeCardDescription.height + 0.2) * scale,
       z: (location.id ?? 0) * 0.05
     }
   }
@@ -39,20 +27,19 @@ class LandscapeLocator extends Locator {
 
   getBaseCoordinates(location: Location, context: MaterialContext) {
     const playerIndex = getRelativePlayerIndex(context, location.player)
-    const position = playerPositions[context.rules.players.length - 2][playerIndex]
-    const players = context.rules.players.length
-    switch (position) {
-      case Position.TopLeft:
-        return { x: -33, y: -15 }
-      case Position.TopRight:
-        return { x: 33, y: -15 }
-      case Position.BottomLeft:
-        return players === 2 ? { x: -27, y: 7 } : players === 3 ? { x: -35, y: 7 } : { x: -33, y: 15 }
-      case Position.BottomCenter:
-        return { x: 0, y: 7 }
-      case Position.BottomRight:
-        return players === 2 ? { x: 30, y: 7 } : players === 3 ? { x: 35, y: 7 } : { x: 33, y: 15 }
-    }
+    return { x: getColumnCenterX(playerIndex, context.rules.players.length), y: playerIndex === 0 ? ROW_Y : ROW_Y + 15}
+  }
+
+  getScale(location: Location, context: MaterialContext): number {
+    const playerIndex = getRelativePlayerIndex(context, location.player)
+    return playerIndex === 0 ? 1 : OPPONENT_SCALE
+  }
+
+  placeItem(item: MaterialItem, context: ItemContext) {
+    const transform = super.placeItem(item, context)
+    const scale = this.getScale(item.location, context)
+    if (scale !== 1) transform.push(`scale(${scale})`)
+    return transform
   }
 }
 
