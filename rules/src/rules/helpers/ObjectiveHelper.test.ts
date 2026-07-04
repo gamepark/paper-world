@@ -378,29 +378,50 @@ describe('OneDiagonalWith234', () => {
 // ─── 12. ThreeStacksOf4s ─────────────────────────────────────────────────────
 
 describe('ThreeStacksOf4s', () => {
-  it('passes with 3 positions having stack height ≥ 4', () => {
+  it('passes with exactly 3 stacks showing value 4', () => {
+    expect(isObjectiveCompleted(Objectives.ThreeStacksOf4s, [
+      card(Y4, 0, 0), card(B4, 1, 0), card(G4, 2, 0)
+    ])).toBe(true)
+  })
+
+  it('passes with more than 3 stacks showing value 4', () => {
+    expect(isObjectiveCompleted(Objectives.ThreeStacksOf4s, [
+      card(Y4, 0, 0), card(B4, 1, 0), card(G4, 2, 0), card(K4, 0, 1)
+    ])).toBe(true)
+  })
+
+  it('fails with only 2 stacks showing value 4', () => {
+    expect(isObjectiveCompleted(Objectives.ThreeStacksOf4s, [
+      card(Y4, 0, 0), card(B4, 1, 0), card(G1, 2, 0)
+    ])).toBe(false)
+  })
+
+  it('passes regardless of stack height, as long as the visible top card is a 4', () => {
+    // A single-card stack showing a 4 (reached via a jump) still counts.
     const panorama = [
-      ...stack(Y1, Y2, Y3, Y4)(0, 0),
+      card(Y4, 0, 0),
       ...stack(B1, B2, B3, B4)(1, 0),
-      ...stack(G1, G2, G3, G4)(2, 0)
+      card(G4, 2, 0)
     ]
     expect(isObjectiveCompleted(Objectives.ThreeStacksOf4s, panorama)).toBe(true)
   })
 
-  it('passes when some stacks have more than 4 cards', () => {
+  it('fails when a tall stack is buried and the visible top card is not a 4', () => {
+    // Stack at (0,0) has 4 cards but the visible top is Y5, not Y4.
     const panorama = [
       ...stack(Y1, Y2, Y3, Y4, Y5)(0, 0),
-      ...stack(B1, B2, B3, B4)(1, 0),
-      ...stack(G1, G2, G3, G4)(2, 0)
+      card(B4, 1, 0),
+      card(G4, 2, 0)
     ]
-    expect(isObjectiveCompleted(Objectives.ThreeStacksOf4s, panorama)).toBe(true)
+    expect(isObjectiveCompleted(Objectives.ThreeStacksOf4s, panorama)).toBe(false)
   })
 
-  it('fails with only 2 stacks of height 4', () => {
+  it('uses top card of stack, not buried card', () => {
+    // Stack at (0,0): Y4 buried under Y5 → visible = Y5 (value 5), doesn't count
     const panorama = [
-      ...stack(Y1, Y2, Y3, Y4)(0, 0),
-      ...stack(B1, B2, B3, B4)(1, 0),
-      card(G1, 2, 0)
+      ...stack(Y4, Y5)(0, 0),
+      card(B4, 1, 0),
+      card(G4, 2, 0)
     ]
     expect(isObjectiveCompleted(Objectives.ThreeStacksOf4s, panorama)).toBe(false)
   })

@@ -117,10 +117,6 @@ function completeColumns(map: PanoramaMap): CardInfo[][] {
   return cols
 }
 
-function stackHeight(x: number, y: number, panorama: MaterialItem[]): number {
-  return panorama.filter(item => item.location.x === x && item.location.y === y).length
-}
-
 export function isObjectiveCompleted(objective: Objectives, panorama: MaterialItem[]): boolean {
   const map = buildPanoramaMap(panorama)
 
@@ -179,7 +175,7 @@ export function isObjectiveCompleted(objective: Objectives, panorama: MaterialIt
       })
 
     case Objectives.ThreeStacksOf4s:
-      return positions(map).filter(([x, y]) => stackHeight(x, y, panorama) >= 4).length >= 3
+      return [...map.values()].filter(c => c.value === 4).length >= 3
 
     case Objectives.FiveStacksOf1s:
       return [...map.values()].filter(c => c.value === 1).length >= 5
