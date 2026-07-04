@@ -5,6 +5,7 @@ import { Memory } from './material/Memory'
 import { RuleId } from './rules/RuleId'
 import { CheckObjectivesRule } from './rules/CheckObjectivesRule'
 import { ChooseActionRule } from './rules/ChooseActionRule'
+import { DiscardForSkipRule } from './rules/DiscardForSkipRule'
 import { DiscardToLimitRule } from './rules/DiscardToLimitRule'
 import { ScoreHelper } from './rules/helpers/ScoreHelper'
 import { PlaceCardRule } from './rules/PlaceCardRule'
@@ -19,6 +20,7 @@ export class PaperWorldRules
   rules = {
     [RuleId.ChooseAction]: ChooseActionRule,
     [RuleId.PlaceCard]: PlaceCardRule,
+    [RuleId.DiscardForSkip]: DiscardForSkipRule,
     [RuleId.DiscardToLimit]: DiscardToLimitRule,
     [RuleId.TakeScissors]: TakeScissorsRule,
     [RuleId.CheckObjectives]: CheckObjectivesRule
@@ -47,6 +49,10 @@ export class PaperWorldRules
 
   isAdvancedMode(): boolean {
     return !!this.remind(Memory.AdvancedMode)
+  }
+
+  getSkipDiscardRemaining(player: number): number {
+    return this.remind(Memory.SkipDiscardRemaining, player) ?? 0
   }
 
   getScore(player: number): number {

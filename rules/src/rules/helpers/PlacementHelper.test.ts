@@ -2,7 +2,7 @@ import { MaterialItem } from '@gamepark/rules-api'
 import { describe, expect, it } from 'vitest'
 import { Landscape } from '../../material/Landscape'
 import { LocationType } from '../../material/LocationType'
-import { advancedDiscardWouldHelp, consumeAdvancedSkip, getAdvancedMaxSkip, getSkipLevel, getValidSpots } from './PlacementHelper'
+import { getAdvancedJumpBudget, getSkipLevel, getValidSpots } from './PlacementHelper'
 
 const Y1 = Landscape.Yellow1
 const Y2 = Landscape.Yellow2
@@ -13,10 +13,6 @@ const B1 = Landscape.Blue1
 
 function card(id: Landscape, x: number, y: number, stackIdx = 0): MaterialItem {
   return { id, location: { type: LocationType.Landscape, player: 1, x, y, id: stackIdx } } as MaterialItem
-}
-
-function hand(...ids: Landscape[]): MaterialItem[] {
-  return ids.map(id => ({ id, location: { type: LocationType.PlayerHand, player: 1 } } as MaterialItem))
 }
 
 describe('getValidSpots — stacking on an existing pile', () => {
@@ -83,53 +79,20 @@ describe('getSkipLevel', () => {
   })
 })
 
-describe('getAdvancedMaxSkip', () => {
-  it('equals the pending discards when there is no token', () => {
-    expect(getAdvancedMaxSkip(2, false, false)).toBe(2)
+describe('getAdvancedJumpBudget', () => {
+  it('equals the remaining hand size after playing the jump card, with no token', () => {
+    expect(getAdvancedJumpBudget(3, false, false)).toBe(2)
   })
 
   it('adds 1 credit when the token is held and its discount is unused', () => {
-    expect(getAdvancedMaxSkip(2, true, false)).toBe(3)
+    expect(getAdvancedJumpBudget(3, true, false)).toBe(3)
   })
 
   it('does not add a credit once the discount has been used this turn', () => {
-    expect(getAdvancedMaxSkip(2, true, true)).toBe(2)
-  })
-})
-
-describe('consumeAdvancedSkip', () => {
-  it('leaves everything untouched for a normal placement (skipLevel 0)', () => {
-    expect(consumeAdvancedSkip(2, false, 0, true)).toEqual({ pendingDiscards: 2, discountUsed: false })
+    expect(getAdvancedJumpBudget(3, true, true)).toBe(2)
   })
 
-  it('subtracts the skip level from pending discards when it fully covers it', () => {
-    expect(consumeAdvancedSkip(3, false, 2, false)).toEqual({ pendingDiscards: 1, discountUsed: false })
-  })
-
-  it('uses the scissors discount for the missing card and resets pending discards', () => {
-    expect(consumeAdvancedSkip(2, false, 3, true)).toEqual({ pendingDiscards: 0, discountUsed: true })
-  })
-
-  it('keeps discountUsed once already consumed earlier this turn', () => {
-    expect(consumeAdvancedSkip(2, true, 2, true)).toEqual({ pendingDiscards: 0, discountUsed: true })
-  })
-})
-
-describe('advancedDiscardWouldHelp', () => {
-  const panorama = [card(Y1, 0, 0)]
-
-  it('is true when one more discard would unlock a new spot', () => {
-    // Y4 needs a skip of 2 (gap Y2,Y3); maxSkip 1 -> 2 unlocks it
-    expect(advancedDiscardWouldHelp(hand(Y4), panorama, new Set(), 1)).toBe(true)
-  })
-
-  it('is false when the extra credit would not unlock anything new', () => {
-    // Y1 already fits as a new stack with maxSkip 0, discarding more brings no new spot for it
-    expect(advancedDiscardWouldHelp(hand(Y1), panorama, new Set(), 0)).toBe(false)
-  })
-
-  it('is false once the biggest useful skip has already been reached', () => {
-    // Y5 needs at most a skip of 4 (empty spot: value - 1); once maxSkip covers it, +1 changes nothing
-    expect(advancedDiscardWouldHelp(hand(Y5), panorama, new Set(), 4)).toBe(false)
+  it('never goes negative when the hand is empty', () => {
+    expect(getAdvancedJumpBudget(0, false, false)).toBe(0)
   })
 })

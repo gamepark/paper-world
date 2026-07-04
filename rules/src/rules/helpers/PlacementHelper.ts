@@ -92,34 +92,12 @@ export function getSkipLevel(cardId: Landscape, x: number, y: number, stackIndex
   return Math.max(0, cardValue - getLandscapeValue(prevTop.id as Landscape) - 1)
 }
 
-// Mode Avancé: le crédit de saut disponible est la somme des cartes déjà défaussées ce
-// tour-ci et, si le jeton Ciseaux est possédé et sa réduction pas encore utilisée, 1 carte
-// supplémentaire offerte par le jeton (réduction de coût, et non saut gratuit comme en mode de base).
-export function getAdvancedMaxSkip(pendingDiscards: number, hasToken: boolean, discountUsed: boolean): number {
-  return pendingDiscards + (hasToken && !discountUsed ? 1 : 0)
-}
-
-// Consomme le crédit de saut utilisé par une pose. Si le crédit défaussé ne suffit pas mais que
-// la réduction du jeton Ciseaux comble l'écart, elle est marquée comme utilisée pour le reste du tour.
-export function consumeAdvancedSkip(pendingDiscards: number, discountUsed: boolean, skipLevel: number, hasToken: boolean): { pendingDiscards: number; discountUsed: boolean } {
-  if (skipLevel === 0) return { pendingDiscards, discountUsed }
-  if (skipLevel <= pendingDiscards) return { pendingDiscards: pendingDiscards - skipLevel, discountUsed }
-  return { pendingDiscards: 0, discountUsed: discountUsed || hasToken }
-}
-
-// Vrai si défausser une carte de plus permettrait de poser une carte de la main sur un
-// emplacement qui ne serait pas accessible avec le crédit de saut actuel.
-export function advancedDiscardWouldHelp(handItems: MaterialItem[], panorama: MaterialItem[], blocked: Set<string>, maxSkip: number): boolean {
-  const seenIds = new Set<number>()
-  for (const handItem of handItems) {
-    const cardId = handItem.id as Landscape
-    if (seenIds.has(cardId)) continue
-    seenIds.add(cardId)
-    const current = getValidSpots(cardId, panorama, blocked, maxSkip)
-    const withOneMore = getValidSpots(cardId, panorama, blocked, maxSkip + 1)
-    if (withOneMore.length > current.length) return true
-  }
-  return false
+// Mode Avancé: le nombre de rangs sautables est plafonné par ce que le joueur pourra payer
+// après avoir posé sa carte (cartes restant en main + 1 carte offerte par le jeton Ciseaux
+// si possédé et sa réduction pas encore utilisée ce tour-ci). Le paiement se fait par
+// défausse forcée juste après la pose, et non par défausse préalable.
+export function getAdvancedJumpBudget(handSize: number, hasToken: boolean, discountUsed: boolean): number {
+  return Math.max(0, (handSize - 1) + (hasToken && !discountUsed ? 1 : 0))
 }
 
 export function getPlayerPanorama(material: { location: { type: LocationType; player?: number; x?: number; y?: number; id?: number } }[], player: number): MaterialItem[] {
