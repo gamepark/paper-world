@@ -8,15 +8,14 @@
   "license": "ISC",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "eslint": "^10.3.0",
+    "eslint": "^10.6.0",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.5",
-    "globals": "^17.6.0",
-    "lerna": "^9.0.7",
-    "prettier": "^3.8.3",
+    "eslint-plugin-prettier": "^5.5.6",
+    "globals": "^17.7.0",
+    "prettier": "^3.9.4",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.59.3",
-    "vitest": "^4.1.6"
+    "typescript-eslint": "^8.62.1",
+    "vitest": "^4.1.9"
   },
   "scripts": {
     "dev": "yarn workspace @gamepark/paper-world-app run dev",
@@ -24,7 +23,7 @@
     "preview": "yarn workspace @gamepark/paper-world-app run preview",
     "build": "yarn workspace @gamepark/paper-world-app run build",
     "deploy": "yarn workspace @gamepark/paper-world-app run deploy",
-    "publish": "lerna publish",
+    "publish": "yarn workspace @gamepark/paper-world run publish",
     "lint": "yarn workspace @gamepark/paper-world run lint && yarn workspace @gamepark/paper-world-app run lint",
     "linkgp": "yarn link ../rules-api ../react-client ../react-game -r && git update-index --skip-worktree package.json yarn.lock",
     "unlinkgp": "git update-index --no-skip-worktree package.json yarn.lock && yarn unlink ../react-game ../react-client ../rules-api"
